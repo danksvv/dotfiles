@@ -1,3 +1,9 @@
+![Mi Entorno de Desarrollo](./.assets/danksvv.png)
+
+# 🚀 Mis Dotfiles Personales
+
+...
+
 # 🚀 Mi Entorno de Desarrollo (Dotfiles)
 
 ¡Bienvenido a mi configuración personal! Este repositorio contiene todos los "dotfiles" (archivos de configuración) de mi entorno de desarrollo.
