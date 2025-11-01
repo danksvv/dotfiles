@@ -1,0 +1,33 @@
+# --- Archivos de Sistema Operativo ---
+# Ignorar archivos basura de macOS y Windows
+.DS_Store
+Thumbs.db
+
+# --- Historial de Shells (¡CRÍTICO!) ---
+# Estos archivos NUNCA deben subirse. A menudo contienen
+# contraseñas, claves de API y tokens en texto plano.
+.bash_history
+.zsh_history
+.nu_history       # Para Nushell
+.zsh_sessions/
+.python_history
+
+# --- Archivos Locales de Vim / Neovim ---
+# Ignorar archivos de "swap", "backup" y "undo"
+*.swp
+*.swo
+*.swn
+.viminfo
+# La caché local de Neovim
+/nvim/.local/
+
+# --- Patrón de "Secretos" (MUY IMPORTANTE) ---
+# Un patrón genérico para excluir cualquier archivo que contenga
+# configuraciones locales o secretos que NO van al repo.
+# Ejemplos: .zshrc.local, .gitconfig.local, .envrc.local
+*.local
+local.*
+
+# --- Caché de Direnv ---
+# El estado interno de direnv no debe comitearse
+.direnv/
