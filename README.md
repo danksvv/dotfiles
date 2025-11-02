@@ -2,104 +2,105 @@
 
 # 🚀 Mi Entorno de Desarrollo (Dotfiles)
 
-¡Bienvenido a mi configuración personal! Este repositorio contiene todos los "dotfiles" (archivos de configuración) de mi entorno de desarrollo.
+Este repositorio contiene mi configuración personal ("dotfiles"). El objetivo es un entorno de desarrollo **limpio, eficiente y 100% reproducible** en cualquier máquina.
 
-El objetivo es tener un entorno **limpio, eficiente y 100% reproducible** en cualquier máquina macOS. Todo está gestionado mediante [GNU Stow](https://www.gnu.org/software/stow/), lo que me permite mantener los archivos organizados aquí y enlazarlos simbólicamente a sus ubicaciones correctas en el sistema.
-
----
-
-## 🛠️ Tecnologías Incluidas
-
-Estas son las configuraciones que encontrarás en este repositorio. Cada carpeta está diseñada para ser un "paquete" de `stow`.
-
-### ⚡ Zsh (`.zshrc`)
-
-Es el "cerebro" de la terminal. Esta configuración, basada en **Oh My Zsh**, está optimizada para ser rápida, funcional y segura.
-
-**Características principales:**
-
-- **Organización:** El fichero `.zshrc` está dividido en secciones lógicas (OMZ, Exports, Alias, Funciones, Inits, Prompt) para un mantenimiento sencillo.
-- **Carga Segura de Secretos:** Las claves de API (como `GEMINI_API_KEY`) no se guardan en el repositorio. Se cargan de forma segura desde un fichero local `.zshrc_private`, que está ignorado por `git`.
-- **Gestor de Temas `LS_COLORS`:**
-  - Las configuraciones de color de `ls` están en un fichero independiente (`.ls_themes.zsh`).
-  - Incluye una función personalizada `set_ls_theme` para cambiar de tema al instante (ej. `set_ls_theme dracula`).
-  - La función tiene autocompletado con `TAB` para ver todos los temas disponibles.
-- **Inicialización de Herramientas:** Configura e inicializa automáticamente:
-  - `Starship` (para un prompt moderno y personalizado)
-  - `zoxide` (navegación de directorios inteligente)
-  - `atuin` (historial de shell mejorado con BBDD)
-  - `fnm` (gestor de versiones de Node.js)
-  - `sdkman` (gestor de SDKs de Java y más)
-  - `direnv` (gestor de variables de entorno por directorio)
-- **Plugins Clave:**
-  - `git`
-  - `zsh-autosuggestions`
-  - `zsh-syntax-highlighting`
-  - `fast-syntax-highlighting`
-  - `zsh-autocomplete`
-
-### ⚡ Neovim (`nvim`)
-
-Mi editor de código principal. Es mi IDE completo para todo.
-
-- **Función:** Un editor de texto modal, extensible y basado en terminal.
-- **Configuración:** Mi setup está basado en **LazyVim**, lo que me proporciona una base sólida con carga perezosa de plugins. Incluye:
-  - Soporte completo para LSP (autocompletado, diagnósticos).
-  - Integración con Git (Gitsigns, Diffview).
-  - Buscador "fuzzy" (Telescope).
-  - Soporte para depuración (DAP).
-
-### terminal Kitty (`kitty`)
-
-Un emulador de terminal moderno y rápido, acelerado por GPU.
-
-- **Función:** La ventana principal donde vivo y ejecuto todos mis comandos.
-- **Configuración:** Mi `kitty.conf` define:
-  - El tema de colores y la transparencia.
-  - La fuente (probablemente una [Nerd Font](https://www.nerdfonts.com/) para los iconos).
-  - Atajos de teclado para crear nuevas pestañas y ventanas (`splits`).
-
-### terminal WezTerm (`wezterm`)
-
-Otro excelente emulador de terminal acelerado por GPU, escrito en Rust.
-
-- **Función:** Lo mantengo como alternativa a Kitty, principalmente porque su configuración se escribe en **Lua**, lo que me permite usar el mismo lenguaje que Neovim.
-- **Configuración:** Similar a Kitty, define fuentes, colores y atajos.
-
-### 🗂️ Zellij (`zellij`)
-
-Un multiplexor de terminal moderno y muy fácil de usar (una alternativa a `tmux`).
-
-- **Función:** Me permite tener múltiples sesiones, pestañas y paneles _dentro de una sola pestaña de la terminal_. Es esencial para mi flujo de trabajo:
-  - **Panel 1:** Ejecutando Neovim.
-  - **Panel 2:** Ejecutando un servidor de desarrollo.
-  - **Panel 3:** Abierto para comandos de Git (`git st`, `git ac`, etc.).
-- **Configuración:** Define mis atajos de teclado para moverme entre paneles, crear nuevos y renombrar pestañas.
-
-### 🛠️ Scripts (`scripts/`)
-
-Esta es una colección de scripts de utilidad personal, gestionada por `stow`. El paquete se enlaza automáticamente a `~/.scripts`, una carpeta que ya está incluida en el `$PATH` de la configuración de `.zshrc`.
-
-**Scripts Principales:**
-
-- **`renombrar_por_fecha.sh`:** Renombra en lote todos los ficheros (fotos, vídeos) de un directorio a un formato limpio y ordenado (`YYYY.MM.DD_HHMMSS.ext`) basándose en su fecha de toma.
-  - Utiliza un sistema de _fallback_ (Fecha de Toma > Fecha de Creación > Fecha de Fichero) para asegurar que el 100% de los ficheros sean procesados, incluso si no tienen metadatos EXIF.
-  - **Dependencia:** Requiere `exiftool`.
-    - _macOS:_ `brew install exiftool`
-    - _Ubuntu:_ `sudo apt install libimage-exiftool-perl`
+Todo está gestionado con [GNU Stow](https://www.gnu.org/software/stow/), que me permite mantener los archivos organizados aquí y enlazarlos simbólicamente a sus ubicaciones correctas en el sistema.
 
 ---
 
-## 🚀 Instalación Rápida (Guía para mi "Yo del Futuro")
+## 🛠️ Herramientas Incluidas
 
-Pasos para configurar una nueva máquina macOS desde cero.
+Este repositorio configura las siguientes herramientas, donde cada carpeta es un "paquete" de `stow`.
 
-### 1. Prerrequisitos (Instalar con Homebrew)
+| Herramienta              | Propósito               | Configuración Clave                                                                                                                                                                |
+| :----------------------- | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Zsh**                  | Shell principal         | Basado en **Oh My Zsh**. Carga segura de secretos (`.zshrc_private`), gestión de temas `LS_COLORS`, e inicialización de `starship`, `zoxide`, `atuin`, `fnm`, `sdkman` y `direnv`. |
+| **Neovim (`nvim`)**      | Editor de código (IDE)  | Basado en **LazyVim**. Incluye LSP, integración con Git (Gitsigns), buscador (Telescope) y soporte para depuración (DAP).                                                          |
+| **Kitty / WezTerm**      | Emuladores de Terminal  | Alternativas modernas y rápidas (aceleradas por GPU). WezTerm usa Lua para su configuración, igual que Neovim.                                                                     |
+| **Zellij**               | Multiplexor de Terminal | Alternativa moderna a `tmux` para gestionar múltiples paneles y pestañas (ej. Nvim, servidor web, comandos git) dentro de una sola terminal.                                       |
+| **Scripts (`scripts/`)** | Utilidades              | Colección de scripts personales (ej. `renombrar_por_fecha.sh`) que se añaden automáticamente al `$PATH`.                                                                           |
+
+---
+
+## 🚀 Guía de Instalación (Multiplataforma)
+
+Pasos para configurar un nuevo entorno desde cero, adaptados a diferentes sistemas operativos.
+
+### 1. Clonar el Repositorio
+
+Primero, clona este repositorio en tu directorio `home`.
 
 ```bash
-# Instalar las herramientas principales
+git clone [https://github.com/tu-usuario/dotfiles.git](https://github.com/tu-usuario/dotfiles.git) ~/dotfiles
+```
+
+### 2. Instalar el Gestor de Paquetes
+
+Necesitarás un gestor de paquetes para instalar las herramientas.
+
+- **macOS (Intel & Apple Silicon M1/M2/Mx):** Instala Homebrew.
+
+```bash
+/bin/bash -c "$(curl -fsSL [https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh](https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh))"
+```
+
+- **Ubuntu / Windows (WSL):** apt ya viene instalado. Asegúrate de que esté actualizado.
+
+```bash
+sudo apt update && sudo apt upgrade
+```
+
+### 3. Instalar Herramientas Base
+
+Instala GNU Stow (el gestor de enlaces) y las demás herramientas.
+
+- **macOS (Intel & Apple Silicon):**
+
+```bash
+# El gestor de enlaces
+brew install stow
+
+# Herramientas principales
 brew install neovim kitty wezterm zellij
 
-# Instalar el gestor de enlaces
-brew install stow
+# Dependencias de scripts (para renombrar_por_fecha.sh)
+brew install exiftool
 ```
+
+- **Ubuntu / Windows (WSL):**
+
+```bash
+# El gestor de enlaces
+sudo apt install stow
+
+# Herramientas principales (Neovim puede requerir un PPA para la última versión)
+sudo apt install neovim zellij
+
+# Dependencias de scripts
+sudo apt install libimage-exiftool-perl
+
+# Nota: Kitty y WezTerm suelen requerir pasos de instalación manual
+# Revisa sus sitios web oficiales para la instalación en Ubuntu.
+```
+
+### 4. Enlazar los Dotfiles con Stow
+
+Una vez instaladas las herramientas, sitúate en la carpeta del repositorio y usa stow para crear los enlaces simbólicos.
+
+```bash
+cd ~/dotfiles
+
+# Enlaza la configuración de zsh
+stow zsh
+
+# Enlaza la configuración de Neovim
+stow nvim
+
+# Enlaza las demás (ej. kitty, zellij, etc.)
+stow kitty
+stow wezterm
+stow zellij
+stow scripts
+```
+
+¡Y listo! Al abrir una nueva terminal, Zsh (o tu shell configurada) debería cargar todo el entorno.
