@@ -76,6 +76,18 @@ Un multiplexor de terminal moderno y muy fácil de usar (una alternativa a `tmux
   - **Panel 3:** Abierto para comandos de Git (`git st`, `git ac`, etc.).
 - **Configuración:** Define mis atajos de teclado para moverme entre paneles, crear nuevos y renombrar pestañas.
 
+### 🛠️ Scripts (`scripts/`)
+
+Esta es una colección de scripts de utilidad personal, gestionada por `stow`. El paquete se enlaza automáticamente a `~/.scripts`, una carpeta que ya está incluida en el `$PATH` de la configuración de `.zshrc`.
+
+**Scripts Principales:**
+
+- **`renombrar_por_fecha.sh`:** Renombra en lote todos los ficheros (fotos, vídeos) de un directorio a un formato limpio y ordenado (`YYYY.MM.DD_HHMMSS.ext`) basándose en su fecha de toma.
+  - Utiliza un sistema de _fallback_ (Fecha de Toma > Fecha de Creación > Fecha de Fichero) para asegurar que el 100% de los ficheros sean procesados, incluso si no tienen metadatos EXIF.
+  - **Dependencia:** Requiere `exiftool`.
+    - _macOS:_ `brew install exiftool`
+    - _Ubuntu:_ `sudo apt install libimage-exiftool-perl`
+
 ---
 
 ## 🚀 Instalación Rápida (Guía para mi "Yo del Futuro")
