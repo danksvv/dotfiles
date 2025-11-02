@@ -31,3 +31,6 @@ local.*
 # --- Caché de Direnv ---
 # El estado interno de direnv no debe comitearse
 .direnv/
+
+# api keys 
+.zshrc_private
