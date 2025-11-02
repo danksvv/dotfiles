@@ -85,22 +85,52 @@ sudo apt install libimage-exiftool-perl
 
 ### 4. Enlazar los Dotfiles con Stow
 
-Una vez instaladas las herramientas, sitúate en la carpeta del repositorio y usa stow para crear los enlaces simbólicos.
+Una vez instaladas las herramientas, sitúate en la carpeta del repositorio.
+
+**_Importante:_** Usamos dos comandos de stow diferentes. Unos paquetes van directos al **HOME (~)** y otros van al directorio **~/.config.** stow no sobrescribirá archivos existentes; te dará un error si no has hecho backup **(ver Notas Post-Instalación)**.
 
 ```bash
 cd ~/dotfiles
 
-# Enlaza la configuración de zsh
+# 1. Enlazar paquetes que van al directorio HOME (~)
+# (ej. zsh, scripts)
 stow zsh
-
-# Enlaza la configuración de Neovim
-stow nvim
-
-# Enlaza las demás (ej. kitty, zellij, etc.)
-stow kitty
-stow wezterm
-stow zellij
 stow scripts
+
+# 2. Enlazar paquetes que van a ~/.config
+# Usamos --target para apuntar a la carpeta .config
+stow --target=$HOME/.config nvim kitty zellij wezterm
 ```
 
 ¡Y listo! Al abrir una nueva terminal, Zsh (o tu shell configurada) debería cargar todo el entorno.
+
+---
+
+### 💡 Notas Post-Instalación y Errores Comunes
+
+#### 1. Conflicto de Archivos Existentes
+
+stow no borrará tus archivos locales (ej. ~/.zshrc o ~/.config/nvim). Si ya existen, stow fallará y te avisará de un conflicto.
+
+Solución: Antes de ejecutar stow, renombra tus archivos locales antiguos para hacer un backup:
+
+```bash
+mv ~/.zshrc ~/.zshrc.bak
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.config/kitty ~/.config/kitty.bak
+# etc.
+```
+
+#### 2. Neovim (LazyVim) y Mason
+
+- **Primer Arranque:** La primera vez que abras nvim, LazyVim instalará automáticamente todos los plugins. Dale un minuto.
+
+- **Error "Mason package path not found" (ej. astro-language-server):** Si ves este error al abrir nvim (especialmente en tu home), es normal.
+  - **Causa:** El LSP (servidor de lenguaje) de Astro espera encontrar un paquete (@astrojs/ts-plugin) dentro de la carpeta node_modules de un proyecto. Al no estar en un proyecto de Astro, falla.
+
+  - **Solución:**
+    1. El error suele desaparecer solo cuando abres nvim dentro de un proyecto de Astro con npm install ejecutado.
+
+    2. Puedes ejecutar :Mason en Neovim y probar a reinstalar (gU) el paquete astro-language-server.
+
+    3. Si no usas Astro, puedes desactivar el LSP por completo en tu configuración de LazyVim para eliminar el error.
