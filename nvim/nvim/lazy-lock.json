@@ -59,6 +59,7 @@
   "sakura.nvim": { "branch": "main", "commit": "9ec556973513700f6ad3fe816bd1ae6ceebabb3f" },
   "snacks.nvim": { "branch": "main", "commit": "143e9b58c7b8301bdc36b1b8a03449078beb49d1" },
   "symbols-outline.nvim": { "branch": "master", "commit": "564ee65dfc9024bdde73a6621820866987cbb256" },
+  "tabular": { "branch": "master", "commit": "12437cd1b53488e24936ec4b091c9324cafee311" },
   "todo-comments.nvim": { "branch": "main", "commit": "411503d3bedeff88484de572f2509c248e499b38" },
   "tokyonight.nvim": { "branch": "main", "commit": "2642dbb83333e0575d1c3436e1d837926871c5fb" },
   "transparent.nvim": { "branch": "main", "commit": "8ac59883de84e9cd1850ea25cf087031c5ba7d54" },
