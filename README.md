@@ -1,4 +1,4 @@
-![Mi Entorno de Desarrollo](./.assets/danksvv.png)
+![Mi Entorno de Desarrollo](./.assets/danksvv-small.png)
 
 # 🚀 Mis Dotfiles Personales
 
