@@ -127,6 +127,46 @@ cf() {
     done
 }
 
+# Función para el mantenimiento completo de Homebrew
+function brewup() {
+    # 'set -e' dentro de una función de zsh es 'setopt localoptions errexit'
+    setopt localoptions errexit
+
+    clear
+    echo "Iniciando mantenimiento de Homebrew..."
+    
+    # Comandos críticos: si estos fallan, queremos que el script pare.
+    echo "Actualizando Homebrew y paquetes instalados..."
+    brew update && brew upgrade
+    
+    echo "Limpiando paquetes antiguos..."
+    brew cleanup
+    
+    # --- INICIO DE LA CORRECCIÓN ---
+
+    # Comando no-crítico (Doctor):
+    # 'brew doctor' falla (retorna no-cero) si encuentra avisos.
+    # Usamos '|| true' para que no active 'errexit' y detenga el script.
+    echo "Comprobando el estado de Homebrew..."
+    brew doctor || true 
+    
+    echo
+    echo "¡Mantenimiento de Homebrew completado!"
+    echo
+    
+    # Comando no-crítico (Read):
+    # 'read' falla si recibe un EOF (Ctrl+D).
+    # Usamos '|| true' para evitar que 'errexit' se active si
+    # el usuario pulsa Ctrl+D en lugar de Enter.
+    # for bash, use:
+    # read -p "Presiona Enter para limpiar y mostrar fastfetch..." || true
+    # for zsh, use:
+    read "?Presiona Enter para limpiar y mostrar fastfetch..." || true
+    # --- FIN DE LA CORRECCIÓN ---
+
+    clear
+    fastfetch
+}
 # ==============================================================================
 # SECCIÓN 6: INICIALIZACIÓN DE HERRAMIENTAS (EVALS)
 # ==============================================================================
