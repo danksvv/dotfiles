@@ -84,7 +84,25 @@ alias wezterm='flatpak run org.wezfurlong.wezterm'
 # ==============================================================================
 # --- FUNCIONES DEFINIDAS  ---
 # ==============================================================================
-
+# Función 'cf' (Clear File) para vaciar contenido de uno o más archivos. [cite: 19]
+cf() {
+    if [ $# -eq 0 ]; then
+        echo "Uso: cf <archivo1> [archivo2...]"
+        echo "   (Vacía el contenido de archivos, manteniendo el archivo.)"
+        return 1
+    fi
+    for file in "$@"; do
+        if [ -d "$file" ]; then
+            echo "cf: 🚨 Error: '$file' es un directorio. Solo funciona con archivos."
+        elif [ -f "$file" ]; then
+            # El comando limpio para truncar contenido: :> $file
+            :> "$file"
+            echo "cf: '$file' vaciado."
+        else
+            echo "cf: ⚠️ Advertencia: '$file' no existe o no es un archivo."
+        fi
+    done
+}
 # Función para el mantenimiento completo del sistema (APT)
 function aptup() {
     # 'set -e' dentro de una función de zsh es 'setopt localoptions errexit'
