@@ -1,0 +1,192 @@
+# ==============================================================================
+# SECCIÓN 1: CONFIGURACIÓN DE OH MY ZSH (OMZ)
+# ==============================================================================
+# Esta sección debe ir PRIMERO.
+# ==============================================================================
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Nombre del tema de OMZ (Starship lo anulará más tarde).
+ZSH_THEME="robbyrussell"
+
+# Lista de plugins de OMZ.
+# (Son los mismos que usas en macOS).
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)
+
+# ==============================================================================
+# SECCIÓN 2: CARGA DE OH MY ZSH (OMZ)
+# ==============================================================================
+# Una vez configurado, cargamos el framework.
+# Toda configuración personal debe ir DESPUÉS de esta línea.
+# ==============================================================================
+
+source $ZSH/oh-my-zsh.sh
+
+# ==============================================================================
+# SECCIÓN 3: EXPORTS Y CONFIGURACIÓN DEL ENTORNO
+# ==============================================================================
+# Configuración de variables de entorno y el PATH.
+# ==============================================================================
+
+# Editor preferido
+export EDITOR='vi'
+
+# Habilitar Homebrew (Linuxbrew) en zsh
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# ...
+# Carga la función de temas de LS_COLORS
+# (Asume que .ls_themes.zsh está enlazado en $HOME)
+source "$HOME/.ls_themes.zsh"
+
+# Establece el tema que quieres usar por defecto al iniciar
+set_ls_theme "neon"
+# !IMMPORTANTE : al ejecutar en la terminal, el comando a lanzar es: set_ls_theme "tema"
+# ==============================================================================
+# SECCIÓN 4: 🚨 GESTIÓN DE SECRETOS 🚨
+# ==============================================================================
+# (Usamos el mismo método seguro que en tu Mac)
+# Crea ~/.zshrc_private y pon tu GEMINI_API_KEY allí.
+# ==============================================================================
+
+if [ -f "$HOME/.zshrc_private" ]; then
+   source "$HOME/.zshrc_private"
+fi
+
+# ==============================================================================
+# SECCIÓN 5: ALIAS Y FUNCIONES PERSONALIZADAS
+# ==============================================================================
+# Todos tus alias y funciones van aquí para encontrarlos fácilmente.
+# ==============================================================================
+
+# --- Aliases ---
+alias vi="nvim"
+alias vim="vi"
+alias zj="zellij"
+
+# lsd (ls deluxe)
+alias ls='lsd'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+
+# kitten (Kitty)
+alias icat='kitten icat'
+
+# fzf + bat + nvim
+alias fzfbat='fzf --preview="bat --theme=gruvbox-dark --color=always {}"'
+alias fzfvi='nvim $(fzf --preview="bat --theme=gruvbox-dark --color=always {}")'
+
+# Alias específico de Linux (WezTerm por Flatpak)
+alias wezterm='flatpak run org.wezfurlong.wezterm'
+
+# ==============================================================================
+# --- FUNCIONES DEFINIDAS  ---
+# ==============================================================================
+
+# Función para el mantenimiento completo del sistema (APT)
+function aptup() {
+    # 'set -e' dentro de una función de zsh es 'setopt localoptions errexit'
+    # Esto hace que el script se detenga si un comando falla.
+    setopt localoptions errexit
+
+    clear
+    echo "Iniciando mantenimiento de Ubuntu (APT)..."
+    echo "Se requerirá tu contraseña para las operaciones del sistema."
+    
+    # 1. Pre-autenticar sudo. Pide la contraseña una vez al inicio.
+    sudo -v
+
+    # 2. Actualizar la lista de paquetes
+    echo
+    echo "--- 1/4: Actualizando lista de paquetes (apt update)..."
+    sudo apt update
+
+    # 3. Actualizar paquetes instalados
+    # (Usamos -y para que sea no-interactivo, igual que 'brew upgrade')
+    echo
+    echo "--- 2/4: Instalando actualizaciones (apt upgrade)..."
+    sudo apt upgrade -y
+
+    # 4. Limpiar dependencias y kernels antiguos
+    # (El equivalente de 'brew cleanup')
+    echo
+    echo "--- 3/4: Eliminando dependencias innecesarias (apt autoremove)..."
+    sudo apt autoremove -y
+
+    # 5. Limpiar la caché de paquetes descargados
+    echo
+    echo "--- 4/4: Limpiando la caché de paquetes (apt autoclean)..."
+    sudo apt autoclean
+
+    # 6. Mensaje final y fastfetch (idéntico a tu brewup)
+    echo
+    echo "¡Mantenimiento de Ubuntu (APT) completado!"
+    echo
+    
+    # 'read' falla si recibe un EOF (Ctrl+D).
+    # Usamos '|| true' para evitar que 'errexit' se active.
+    read "?Presiona Enter para limpiar y mostrar fastfetch..." || true
+
+    clear
+    fastfetch
+}
+
+# Función para el mantenimiento completo de Homebrew
+function brewup() {
+    # 'set -e' dentro de una función de zsh es 'setopt localoptions errexit'
+    setopt localoptions errexit
+
+    clear
+    echo "Iniciando mantenimiento de Homebrew..."
+
+    # Comandos críticos: si estos fallan, queremos que el script pare.
+    echo "Actualizando Homebrew y paquetes instalados..."
+    brew update && brew upgrade
+
+    echo "Limpiando paquetes antiguos..."
+    brew cleanup
+
+    # --- INICIO DE LA CORRECCIÓN ---
+
+    # Comando no-crítico (Doctor):
+    # 'brew doctor' falla (retorna no-cero) si encuentra avisos.
+    # Usamos '|| true' para que no active 'errexit' y detenga el script.
+    echo "Comprobando el estado de Homebrew..."
+    brew doctor || true
+
+    echo
+    echo "¡Mantenimiento de Homebrew completado!"
+    echo
+
+    # Comando no-crítico (Read):
+    # 'read' falla si recibe un EOF (Ctrl+D).
+    # Usamos '|| true' para evitar que 'errexit' se active si
+    # el usuario pulsa Ctrl+D en lugar de Enter.
+    # for bash, use:
+    # read -p "Presiona Enter para limpiar y mostrar fastfetch..." || true
+    # for zsh, use:
+    read "?Presiona Enter para limpiar y mostrar fastfetch..." || true
+    # --- FIN DE LA CORRECCIÓN ---
+
+    clear
+    fastfetch
+}
+# ==============================================================================
+# SECCIÓN 6: INICIALIZACIÓN DE HERRAMIENTAS (EVALS)
+# ==============================================================================
+# Agrupamos todos los 'eval' que configuran herramientas.
+# ==============================================================================
+
+# zoxide (navegación de directorios)
+eval "$(zoxide init zsh --cmd cd)"
+
+# atuin (historial de shell mejorado)
+eval "$(atuin init zsh)"
+
+# Starship (prompt personalizado)
+# Debe ir casi al final para capturar el estado de las herramientas.
+eval "$(starship init zsh)"
+
+# Fin del fichero .zshrc-linux

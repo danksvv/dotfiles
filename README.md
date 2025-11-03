@@ -95,6 +95,7 @@ cd ~/dotfiles
 # 1. Enlazar paquetes que van al directorio HOME (~)
 # (ej. zsh, scripts)
 stow zsh
+# opcional - paquetes scripts personales
 stow scripts
 
 # 2. Enlazar paquetes que van a ~/.config
@@ -134,3 +135,15 @@ mv ~/.config/kitty ~/.config/kitty.bak
     2. Puedes ejecutar :Mason en Neovim y probar a reinstalar (gU) el paquete astro-language-server.
 
     3. Si no usas Astro, puedes desactivar el LSP por completo en tu configuración de LazyVim para eliminar el error.
+
+#### 3. Estructura Multi-SO de Zsh (macOS y Ubuntu)
+
+Para mantener una configuración limpia y separada para cada sistema operativo, usamos un patrón "cargador" (dispatcher).
+
+- **¿Qué hace `stow .zshrc`?** Enlaza 4 archivos a tu `$HOME`.
+- **¿Por qué 4 archivos?**
+  - `~/.zshrc`: Es el único archivo que lee Zsh. Es un "cargador" muy pequeño.
+  - `~/.zshrc-macos`: Contiene **toda** la configuración de macOS (incluyendo `brewup`).
+  - `~/.zshrc-linux`: Contiene **toda** la configuración de Ubuntu (incluyendo `aptup`).
+  - `~/.ls_themes.zsh`: Es el script de temas de color, usado por los otros dos archivos.
+- **¿Cómo funciona?** Al abrir la terminal, `~/.zshrc` detecta tu SO (macOS o Linux) y **carga solo el archivo correcto** (`.zshrc-macos` o `.zshrc-linux`). Esto mantiene las configuraciones separadas y limpias.
