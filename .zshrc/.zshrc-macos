@@ -102,7 +102,13 @@ alias gitalias="git config --global --get-regexp alias"
 # keys direct fzf mix bat & nvim
 alias fzfbat='fzf --preview="bat --theme=gruvbox-dark --color=always {}"'
 alias fzfnvim='nvim $(fzf --preview="bat --theme=gruvbox-dark --color=always {}")'
+# Alias para comandos de Uso de Disco potentes
 
+# Alias para ncdu (Analizador Interactivo)
+alias dug='ncdu'
+
+# Alias para dust con configuración por defecto (profundidad 3, mostrar todos los archivos)
+alias dus='dust -d 3 -s'
 
 # ==============================================================================
 # --- FUNCIONES DEFINIDAS  ---
