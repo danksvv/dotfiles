@@ -68,3 +68,17 @@ vim.keymap.set("n", "<C-s>", SaveFile, { desc = "Save File (custom)" })
 -- 3. Mantenemos los mapeos de guardado para los otros modos
 vim.keymap.set("i", "<C-s>", "<C-o>:w<CR>", { desc = "Save File" })
 vim.keymap.set("v", "<C-s>", "<Esc>:w<CR>", { desc = "Save File" })
+
+-- ==========================================================
+-- ## Alternancia de Temas de Lualine
+-- ==========================================================
+
+vim.keymap.set(
+  "n",
+  "<leader>lt", -- Tecla elegida: <leader>l t (Lualine Theme)
+  function()
+    -- Llama a la función next_theme() en el módulo que creamos
+    require("config.lualine-switcher").next_theme()
+  end,
+  { desc = "Alternar Tema de Lualine" }
+)

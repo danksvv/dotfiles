@@ -1,25 +1,17 @@
 -- 💡 Define qué tema quieres usar aquí.
 -- local current_theme = "evil_lualine"
 -- local current_theme = "bubbles"
--- local current_theme = "cosmicink"
+local current_theme = "cosmicink"
 -- local current_theme = "slanted-gaps"
 
 -- Define la ruta donde buscamos las configuraciones de temas.
--- local theme_path = "plugins.lualine.themes." .. current_theme
+local theme_path = "plugins.lualine.themes." .. current_theme
 
 -- --- INICIO BLOQUE DE CARGA Y CORRECCIÓN ---
--- local ok, custom_theme_config_result = pcall(require, theme_path)
--- local custom_theme_config = ok and custom_theme_config_result or {}
+local ok, custom_theme_config_result = pcall(require, theme_path)
+local custom_theme_config = ok and custom_theme_config_result or {}
 -- --- FIN BLOQUE DE CARGA Y CORRECCIÓN ---
--- Importar el módulo del switcher. Esto también inicializa 'current_theme'.
-local LualineSwitcher = require("config.lualine-switcher")
 
--- Cargar la configuración de la ruta del tema actual
-local theme_path = "plugins.lualine.themes." .. LualineSwitcher.current_theme
-
--- Carga segura (Se mantiene la lógica original)
-local ok, custom_theme_config = pcall(require, theme_path)
-custom_theme_config = ok and custom_theme_config or {}
 -- Función para combinar tablas (USO DE VERIFICACIÓN ESTRICTA AQUÍ)
 local function deep_merge(target, source)
   -- Si 'source' no es una tabla, salimos inmediatamente para prevenir el error 'pairs'.
