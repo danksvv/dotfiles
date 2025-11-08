@@ -82,3 +82,17 @@ vim.keymap.set(
   end,
   { desc = "Alternar Tema de Lualine" }
 )
+
+-- ==========================================================
+-- ## Alternancia de Temas de Color Principal
+-- ==========================================================
+
+-- Keymap para alternar el tema de Color Principal
+vim.keymap.set(
+  "n",
+  "<leader>ct", -- Ejemplo: <leader>c t (Colorscheme Toggle)
+  function()
+    require("config.colorscheme-switcher").next_theme()
+  end,
+  { desc = "Alternar Tema de Color" }
+)

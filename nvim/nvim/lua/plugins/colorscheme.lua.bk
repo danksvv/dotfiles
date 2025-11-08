@@ -1,9 +1,31 @@
 -- ==========================================================
--- 💡 CONTROL DE TEMA PRINCIPAL (Dinámico)
+-- 💡 CONTROL DE TEMA PRINCIPAL
 -- ==========================================================
 
--- 🟢 Cargar el Switcher. Esto inicializa 'current_theme' y las funciones de carga.
-local ColorschemeSwitcher = require("config.colorscheme-switcher")
+-- Define el tema que quieres cargar al iniciar.
+-- ¡Cambia esto al nombre del archivo de tema que quieres probar primero!
+-- local current_theme = "onedark"
+local current_theme = "github-theme"
+
+-- ==========================================================
+-- Funciones Auxiliares para Carga Segura
+-- ==========================================================
+
+-- Función para cargar la configuración de un tema de forma segura
+local function load_theme_config(name)
+  -- La ruta busca el archivo en lua/plugins/colorschemes/{name}.lua
+  local theme_path = "plugins.colorschemes." .. name
+  local ok, config_table = pcall(require, theme_path)
+
+  -- Si falla la carga del archivo de configuración, devolvemos una tabla vacía
+  if not ok then
+    return {}
+  end
+  return config_table
+end
+
+-- Cargar la configuración específica del tema actual
+local theme_opts = load_theme_config(current_theme)
 
 -- ==========================================================
 -- 🌌 SOLUCIÓN DE TRANSPARENCIA DEFINITIVA (AUTOCMD)
@@ -64,6 +86,7 @@ return {
         "NormalNC",
         "EndOfBuffer",
         "TelescopeNormal",
+        -- Opcional: Puedes añadir aquí otros grupos que no estén en tu hook
       },
       exclude = {},
     },
@@ -71,20 +94,14 @@ return {
 
   -- 2. Declaración de todos los Plugins
   { "dgox16/oldworld.nvim", name = "oldworld" },
-  -- { "anAcc22/sakura.nvim", name = "sakura" },
-  {
-    "anAcc22/sakura.nvim",
-    name = "sakura",
-    -- 🟢 CORRECCIÓN: Declara la dependencia faltante de 'lush.nvim'
-    dependencies = { "rktjmp/lush.nvim" },
-  },
+  { "anAcc22/sakura.nvim", name = "sakura" },
   { "rebelot/kanagawa.nvim", name = "kanagawa" },
   { "catppuccin/nvim", name = "catppuccin" },
   { "rose-pine/neovim", name = "rose-pine" },
   { "folke/tokyonight.nvim", name = "tokyonight" },
   { "ellisonleao/gruvbox.nvim", name = "gruvbox" },
   { "Mofiqul/dracula.nvim", name = "dracula" },
-  { "ful1e5/onedark.nvim", name = "onedark" },
+  { "ful1e5/onedark.nvim", name = "onedark" }, -- { "navarasu/onedark.nvim", name = "onedark" },
   { "projekt0n/github-nvim-theme", name = "github-theme" },
   { "EdenEast/nightfox.nvim", name = "nightfox" },
   { "neanias/everforest-nvim", name = "everforest" },
@@ -94,9 +111,37 @@ return {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = function()
-        -- 1. Aplicar la configuración del tema cargado al inicio
-        -- La lógica de carga y los if/else fueron movidos al Switcher
-        ColorschemeSwitcher.apply_theme(ColorschemeSwitcher.current_theme)
+        -- 1. Aplicar la configuración del tema cargado
+        local theme_name = current_theme -- Asignamos el nombre base
+
+        -- Lógica de carga para temas que requieren .setup() y tienen un nombre de colorscheme diferente
+        if current_theme == "onedark" and rawget(_G, "onedark") then
+          require("onedark").setup(theme_opts)
+          require("onedark").load()
+        elseif current_theme == "catppuccin" and rawget(_G, "catppuccin") then
+          require("catppuccin").setup(theme_opts)
+          theme_name = "catppuccin"
+
+        -- CASO ESPECIAL: GitHub Theme (REQUIERE NOMBRE DE VARIANTE)
+        elseif current_theme == "github-theme" then
+          -- Usamos la variante por defecto que configuraste en github_theme.lua
+          theme_name = "github_dark_dimmed"
+          -- Intentar configurar el tema (si existe) antes de cargarlo
+          if rawget(_G, "github_theme") and type(require("github_theme").setup) == "function" then
+            require("github_theme").setup(theme_opts)
+          end
+
+        -- Caso General: Temas que usan las opts para la variante
+        else
+          -- Intentar configurar el tema antes de cargarlo, si tiene opciones
+          if rawget(_G, current_theme) and type(require(current_theme).setup) == "function" then
+            require(current_theme).setup(theme_opts)
+          end
+          -- theme_name ya es current_theme si no pasó por los if/elseif
+        end
+
+        -- Cargar el tema usando el nombre de la variable
+        vim.cmd("colorscheme " .. theme_name)
 
         -- NOTA: La lógica de transparencia se ejecuta AUTOMÁTICAMENTE por el Autocmd.
       end,
