@@ -53,46 +53,13 @@ return {
   -- Plugin: lualine.nvim (¡ACTUALIZADO!)
   -- URL: https://github.com/nvim-lualine/lualine.nvim
   -- Descripción: Una barra de estado ultrarrápida y fácil de configurar.
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   event = "VeryLazy", -- Carga perezosa
-  --   requires = { "nvim-tree/nvim-web-devicons", opt = true }, -- Dependencia opcional para íconos
-  --   opts = {
-  --     options = {
-  --       theme = "auto", -- Tema automático
-  --       icons_enabled = true, -- Habilita íconos
-  --       component_separators = { left = "", right = "" }, -- Separadores modernos (líneas rectas)
-  --       section_separators = { left = "", right = "" }, -- Separadores de sección (curvas)
-  --     },
-  --     sections = {
-  --       lualine_a = {
-  --         {
-  --           "mode", -- Muestra el modo actual
-  --           icon = "", -- Ícono para el modo
-  --         },
-  --       },
-  --       lualine_c = {
-  --         {
-  --           "filename", -- Muestra el nombre del archivo
-  --           path = 1, -- Ruta relativa
-  --         },
-  --       },
-  --       lualine_x = {
-  --         "filetype", -- Tipo de archivo
-  --         -- ¡CLAVE! Muestra diagnósticos de LSP (errores, advertencias)
-  --         { "diagnostics", sources = { "nvim_lsp" }, symbols = { error = " ", warn = " ", info = " " } },
-  --       },
-  --       lualine_y = {
-  --         -- Muestra el estado de Git (añadido, modificado, borrado)
-  --         { "diff", symbols = { added = " ", modified = " ", removed = " " } },
-  --         "encoding",
-  --       },
-  --       lualine_z = {
-  --         "location", -- Posición del cursor (línea:columna)
-  --       },
-  --     },
-  --   },
-  -- },
+  -- -----------------------------------------------
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy", -- Carga perezosa
+    requires = { "nvim-tree/nvim-web-devicons", opt = true }, -- Dependencia opcional para íconos
+    -- ⚠️ NOTA: El bloque 'opts' ha sido removido, la configuración se hará en 'colorscheme.lua'
+  },
   -- Plugin: incline.nvim (Bloque FINAL y ESTABLE)
   {
     "b0o/incline.nvim",

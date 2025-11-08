@@ -1,5 +1,80 @@
+-- ==========================================================
+-- 💡 CONTROL DE TEMA PRINCIPAL
+-- ==========================================================
+
+-- Define el tema que quieres cargar al iniciar.
+-- ¡Cambia esto al nombre del archivo de tema que quieres probar primero!
+local current_theme = "onedark"
+-- local current_theme = "github-theme"
+
+-- ==========================================================
+-- Funciones Auxiliares para Carga Segura
+-- ==========================================================
+
+-- Función para cargar la configuración de un tema de forma segura
+local function load_theme_config(name)
+  -- La ruta busca el archivo en lua/plugins/colorschemes/{name}.lua
+  local theme_path = "plugins.colorschemes." .. name
+  local ok, config_table = pcall(require, theme_path)
+
+  -- Si falla la carga del archivo de configuración, devolvemos una tabla vacía
+  if not ok then
+    return {}
+  end
+  return config_table
+end
+
+-- Cargar la configuración específica del tema actual
+local theme_opts = load_theme_config(current_theme)
+
+-- ==========================================================
+-- 🌌 SOLUCIÓN DE TRANSPARENCIA DEFINITIVA (AUTOCMD)
+-- ESTE BLOQUE DEBE ESTAR ANTES DEL 'return {}' PRINCIPAL
+-- ==========================================================
+
+-- Función para aplicar las anulaciones de transparencia
+local function apply_transparency_hooks()
+  -- Fondo principal de la ventana y ventanas inactivas
+  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+
+  -- Explorador de Archivos/Árbol (NeoTree, NvimTree)
+  vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "MiniFilesNormal", { bg = "none" })
+
+  -- Otros elementos auxiliares (Popups, línea de números, bordes, etc.)
+  vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+  vim.api.nvim_set_hl(0, "FoldColumn", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+  vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
+
+  -- Grupos críticos (Soluciona OneDark y la Sidebar)
+  vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
+  vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+  vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
+  vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = "none" })
+  vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NonText", { bg = "none" })
+  vim.api.nvim_set_hl(0, "MsgArea", { bg = "none" })
+end
+
+-- Creamos un Autocomando para ejecutar el hook en el momento más seguro (después de cargar CUALQUIER colorscheme).
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("TransparentCustomizer", { clear = true }),
+  callback = apply_transparency_hooks,
+  pattern = "*",
+})
+
+-- Ejecutarlo una vez en la carga inicial
+apply_transparency_hooks()
+
+-- ==========================================================
+-- 🏆 INICIO DE LA TABLA PRINCIPAL DE PLUGINS (RETURN)
+-- ==========================================================
 return {
-  -- 1. Plugin de Transparencia
+  -- 1. Plugin de Transparencia (Se mantiene igual)
   {
     "xiyaowong/transparent.nvim",
     lazy = false,
@@ -9,99 +84,66 @@ return {
       extra_groups = {
         "Normal",
         "NormalNC",
-        "Comment",
-        "Constant",
-        "Special",
-        "Identifier",
-        "Statement",
-        "PreProc",
-        "Type",
-        "Underlined",
-        "Todo",
-        "String",
-        "Function",
-        "Conditional",
-        "Repeat",
-        "Operator",
-        "Structure",
-        "LineNr",
-        "NonText",
-        "SignColumn",
-        "CursorLineNr",
         "EndOfBuffer",
         "TelescopeNormal",
+        -- Opcional: Puedes añadir aquí otros grupos que no estén en tu hook
       },
       exclude = {},
     },
   },
 
-  -- 2. Temas de Alto Contraste (Tu selección actual)
-
-  -- Tema 2.1: oldworld.nvim (Tu tema principal actual)
-  {
-    "dgox16/oldworld.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {
-      variant = "oled",
-    },
-  },
-
-  -- Tema 2.2: sakura.nvim
-  { "anAcc22/sakura.nvim" },
-
-  -- ==========================================================
-  -- ##          TEMAS POPULARES ADICIONALES (Añadidos)
-  -- ==========================================================
-
-  -- ✨ NUEVO: Kanagawa (Estilo japonés, tonos azul-púrpura)
-  -- Tiene 3 variantes: 'wave' (default), 'dragon', 'storm'
+  -- 2. Declaración de todos los Plugins
+  { "dgox16/oldworld.nvim", name = "oldworld" },
+  { "anAcc22/sakura.nvim", name = "sakura" },
   { "rebelot/kanagawa.nvim", name = "kanagawa" },
-
-  -- Catppuccin (Muy popular, con 4 variantes)
   { "catppuccin/nvim", name = "catppuccin" },
-
-  -- Rosé Pine (Elegante y suave)
   { "rose-pine/neovim", name = "rose-pine" },
-
-  -- Tokyonight (El tema por defecto de LazyVim, muy completo)
-  { "folke/tokyonight.nvim" },
-
-  -- Gruvbox (Un clásico moderno)
+  { "folke/tokyonight.nvim", name = "tokyonight" },
   { "ellisonleao/gruvbox.nvim", name = "gruvbox" },
-
-  -- Nightfox (Varias variantes oscuras de alta calidad)
-  { "EdenEast/nightfox.nvim" },
-
-  -- Everforest (Tonos verdes y naturales)
-  { "neanias/everforest-nvim" },
-
-  -- ==========================================================
+  { "Mofiqul/dracula.nvim", name = "dracula" },
+  { "ful1e5/onedark.nvim", name = "onedark" }, -- { "navarasu/onedark.nvim", name = "onedark" },
+  { "projekt0n/github-nvim-theme", name = "github-theme" },
+  { "EdenEast/nightfox.nvim", name = "nightfox" },
+  { "neanias/everforest-nvim", name = "everforest" },
 
   -- 3. Configuración del Núcleo de LazyVim
   {
     "LazyVim/LazyVim",
     opts = {
-      -- Usamos una función que se ejecuta después de la carga del tema
       colorscheme = function()
-        -- 1. Cargar el tema que quieres usar
-        vim.cmd("colorscheme kanagawa") -- <--- ¡Activando Kanagawa (por defecto, la variante 'wave')!
+        -- 1. Aplicar la configuración del tema cargado
+        local theme_name = current_theme -- Asignamos el nombre base
 
-        -- 2. Aplicar las anulaciones de transparencia
+        -- Lógica de carga para temas que requieren .setup() y tienen un nombre de colorscheme diferente
+        if current_theme == "onedark" and rawget(_G, "onedark") then
+          require("onedark").setup(theme_opts)
+          require("onedark").load()
+        elseif current_theme == "catppuccin" and rawget(_G, "catppuccin") then
+          require("catppuccin").setup(theme_opts)
+          theme_name = "catppuccin"
 
-        -- Fondo principal de la ventana (Normal) y ventanas inactivas (NormalNC)
-        vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-        vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+        -- CASO ESPECIAL: GitHub Theme (REQUIERE NOMBRE DE VARIANTE)
+        elseif current_theme == "github-theme" then
+          -- Usamos la variante por defecto que configuraste en github_theme.lua
+          theme_name = "github_dark_dimmed"
+          -- Intentar configurar el tema (si existe) antes de cargarlo
+          if rawget(_G, "github_theme") and type(require("github_theme").setup) == "function" then
+            require("github_theme").setup(theme_opts)
+          end
 
-        -- Grupos del Explorador de Archivos (Mini.files, NvimTree, NeoTree)
-        vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
-        vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = "none" })
-        vim.api.nvim_set_hl(0, "MiniFilesNormal", { bg = "none" })
+        -- Caso General: Temas que usan las opts para la variante
+        else
+          -- Intentar configurar el tema antes de cargarlo, si tiene opciones
+          if rawget(_G, current_theme) and type(require(current_theme).setup) == "function" then
+            require(current_theme).setup(theme_opts)
+          end
+          -- theme_name ya es current_theme si no pasó por los if/elseif
+        end
 
-        -- Otros elementos auxiliares (LSP, línea de números, etc.)
-        vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
-        vim.api.nvim_set_hl(0, "FoldColumn", { bg = "none" })
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+        -- Cargar el tema usando el nombre de la variable
+        vim.cmd("colorscheme " .. theme_name)
+
+        -- NOTA: La lógica de transparencia se ejecuta AUTOMÁTICAMENTE por el Autocmd.
       end,
     },
   },
