@@ -96,3 +96,34 @@ vim.keymap.set(
   end,
   { desc = "Alternar Tema de Color" }
 )
+
+-- ==========================================================
+-- ## Limpieza de Historial de Avante (Notificación Corta)
+-- ==========================================================
+
+-- local function ClearAvanteHistory()
+--   -- 1. Ejecuta el comando de Avante para borrar la historia de la sesión actual
+--   local success, err = pcall(function()
+--     vim.cmd("silent! AvanteClear")
+--   end)
+--
+--   if success then
+--     -- 2. Muestra la notificación de éxito al estilo conciso de SaveFile()
+--     vim.notify("✅ Historial de Avante limpiado.", vim.log.levels.INFO)
+--   else
+--     -- Maneja el caso de que el comando AvanteClear falle
+--     vim.notify("Error al limpiar el historial: " .. (err or "Comando fallido."), vim.log.levels.ERROR)
+--   end
+-- end
+--
+-- ==========================================================
+-- ## Mapeos Esenciales de Avante (IA)
+-- ==========================================================
+
+-- 💡 Mapeo para ejecutar la nueva función de limpieza
+vim.keymap.set(
+  "n",
+  "<leader>aX", -- <leader>a c (AI Clear)
+  "<CMD>AvanteClear<CR>",
+  { desc = "Avante: Limpiar Historial de Chat" }
+)
