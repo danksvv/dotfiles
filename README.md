@@ -83,6 +83,16 @@ sudo apt install libimage-exiftool-perl
 # Revisa sus sitios web oficiales para la instalación en Ubuntu.
 ```
 
+#### ⚙️3.a Herramientas Adicionales Recomendadas
+
+Para que esta configuración de Neovim funcione al 100%, es necesario tener instalado lo siguiente en su sistema (Linux/macOS):
+
+| Herramienta      | Propósito                                         | Instalación (Ejemplo en macOS con Homebrew)   |
+| :--------------- | :------------------------------------------------ | :-------------------------------------------- |
+| **dust** (`dus`) | Análisis de uso de disco moderno (shell utility). | `brew install dust` o `sudo apt install dust` |
+| **ncdu** (`dug`) | Análisis de uso de disco interactivo y ncurses.   | `brew install ncdu` o `sudo apt install ncdu` |
+| **Neovim**       | Versión 0.9.x o superior.                         | `brew install neovim`                         |
+
 ### 4. Enlazar los Dotfiles con Stow
 
 Una vez instaladas las herramientas, sitúate en la carpeta del repositorio.
@@ -147,3 +157,14 @@ Para mantener una configuración limpia y separada para cada sistema operativo, 
   - `~/.zshrc-linux`: Contiene **toda** la configuración de Ubuntu (incluyendo `aptup`).
   - `~/.ls_themes.zsh`: Es el script de temas de color, usado por los otros dos archivos.
 - **¿Cómo funciona?** Al abrir la terminal, `~/.zshrc` detecta tu SO (macOS o Linux) y **carga solo el archivo correcto** (`.zshrc-macos` o `.zshrc-linux`). Esto mantiene las configuraciones separadas y limpias.
+
+#### 4. Funcionalidades Clave y Keymaps (ncdu, dust, etc.)
+
+Esta configuración de Neovim está optimizada para la productividad, destacando las siguientes características:
+
+| Categoría       | Descripción                                                                                       | Keymap (Modo Normal) |
+| :-------------- | :------------------------------------------------------------------------------------------------ | :------------------- |
+| **Shell Tools** | **Análisis de Disco (Dust):** Ejecuta `dust` en un _split_ para ver el uso de disco del proyecto. | `Leader + ds`        |
+| **Shell Tools** | **Análisis Interactivo (Ncdu):** Ejecuta `ncdu` en un _split_ para navegar por el uso de disco.   | `Leader + dg`        |
+| **Temas**       | **Alternar Colores:** Cambia instantáneamente entre tu selección de _colorschemes_.               | `Leader + c t`       |
+| **Temas**       | **Alternar Lualine:** Cambia instantáneamente el tema de la barra de estado de Lualine.           | `Leader + l t`       |

@@ -127,3 +127,39 @@ vim.keymap.set(
   "<CMD>AvanteClear<CR>",
   { desc = "Avante: Limpiar Historial de Chat" }
 )
+-- /lua/config/keymaps.lua (Al final del archivo)
+-- ==========================================================
+-- ## Herramientas de Shell (Disk Usage - dug/dus)
+-- ==========================================================
+
+-- Función para ejecutar dust (el alias 'dus')
+local function RunDust()
+  -- Abre un split horizontal y ejecuta el comando 'dust'
+  -- Usamos 'vsplit' (split vertical) si quieres que la terminal esté al lado.
+  vim.cmd("split | terminal dust")
+
+  -- Nota: 'dust' debe estar disponible en tu PATH.
+end
+
+-- Función para ejecutar ncdu (el alias 'dug')
+local function RunNcdu()
+  -- Abre un split horizontal y ejecuta el comando 'ncdu'
+  vim.cmd("split | terminal ncdu")
+
+  -- Nota: 'ncdu' debe estar disponible en tu PATH.
+end
+
+-- 3. Mapeos de acceso rápido
+vim.keymap.set(
+  "n",
+  "<leader>ds", -- <leader>d s (Disk Dust/Status)
+  RunDust,
+  { desc = "Shell: Ejecutar Dust (dus)" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>dg", -- <leader>d g (Disk Ncdu/Graph)
+  RunNcdu,
+  { desc = "Shell: Ejecutar Ncdu (dug)" }
+)
