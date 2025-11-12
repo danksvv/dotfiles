@@ -110,6 +110,9 @@ alias dug='ncdu'
 # Alias para dust con configuración por defecto (profundidad 3, mostrar todos los archivos)
 alias dus='dust -d 3 -s'
 
+# Alias para cambiar de tema fastfetch
+alias fastfetch='fastfetch --config examples/25.jsonc'
+
 # ==============================================================================
 # --- FUNCIONES DEFINIDAS  ---
 # ==============================================================================
@@ -171,7 +174,8 @@ function brewup() {
     # --- FIN DE LA CORRECCIÓN ---
 
     clear
-    fastfetch
+    # fastfetch
+    fastfetch --config examples/25.jsonc
 }
 # ==============================================================================
 # SECCIÓN 6: INICIALIZACIÓN DE HERRAMIENTAS (EVALS)
