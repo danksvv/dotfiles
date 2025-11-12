@@ -174,8 +174,8 @@ function brewup() {
     # --- FIN DE LA CORRECCIÓN ---
 
     clear
-    # fastfetch
-    fastfetch --config examples/25.jsonc
+    fastfetch
+    # fastfetch --config examples/25.jsonc
 }
 # ==============================================================================
 # SECCIÓN 6: INICIALIZACIÓN DE HERRAMIENTAS (EVALS)
