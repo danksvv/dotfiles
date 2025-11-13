@@ -81,6 +81,17 @@ alias fzfvi='nvim $(fzf --preview="bat --theme=gruvbox-dark --color=always {}")'
 # Alias específico de Linux (WezTerm por Flatpak)
 alias wezterm='flatpak run org.wezfurlong.wezterm'
 
+# Alias para comandos de Uso de Disco potentes
+
+# Alias para ncdu (Analizador Interactivo)
+alias dug='ncdu'
+
+# Alias para dust con configuración por defecto (profundidad 3, mostrar todos los archivos)
+alias dus='dust -d 3 -s'
+
+# Alias para cambiar de tema fastfetch
+alias fastfetch='fastfetch --config examples/25.jsonc'
+
 # ==============================================================================
 # --- FUNCIONES DEFINIDAS  ---
 # ==============================================================================
