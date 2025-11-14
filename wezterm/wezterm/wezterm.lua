@@ -4,22 +4,34 @@ local wezterm = require("wezterm")
 -- Initialize an empty configuration table
 local config = {}
 
--- Background image options
--- config.background = {
--- 	{
--- 		source = {
--- 			File = "C:/Users/alanb/Pictures/synth-kanagawa-blur-20.jpg", -- Path to the background image file
--- 		},
--- 		width = "100%", -- Set the background image width to 100% of the terminal window
--- 		height = "100%", -- Set the background image height to gg100% of the terminal window
--- 		opacity = 1, -- Set the opacity of the background image (0.0 - 1.0)
--- 		hsb = {
--- 			brightness = 0.04, -- Set the brightness of the background image (low value to darken the image)
--- 			saturation = 1, -- Set the saturation of the background image
--- 		},
--- 	},
--- }
+-- Obtener el módulo del sistema operativo
+local os_name = wezterm.target_triple
+local background_path = ""
 
+-- Lógica condicional para asignar la ruta
+if os_name:find("darwin") then -- Mac OS
+	background_path = "/Users/tu-usuario/Pictures/Wallpapers/gimp-images/samurai002-gp.png"
+elseif os_name:find("linux") then -- Linux (Ubuntu)
+	background_path = "/home/danks/Pictures/Wallpapers/samurai002-gp.png"
+end
+
+-- Asigna la configuración de fondo si se encontró una ruta
+if background_path ~= "" then
+	config.background = {
+		{
+			source = {
+				File = background_path,
+			},
+			width = "100%",
+			height = "100%",
+			opacity = 9.0,
+			hsb = {
+				brightness = 0.04,
+				saturation = 1.0,
+			},
+		},
+	}
+end
 -- Sakura Theme
 -- config.colors = {
 -- 	foreground = "#786577", -- na: texto
@@ -105,6 +117,28 @@ config.colors = {
 		[16] = "#F5A191", -- ca: light peach (orange)
 		[17] = "#E29ECA", -- ia: soft pink (pink)
 	},
+	-- tabar
+	tab_bar = {
+		background = "#1e1e2e", -- Esto es correcto para el fondo general de la barra
+
+		-- Pestaña ACTIVA
+		active_tab = {
+			bg_color = "#cba6f7", -- CORREGIDO
+			fg_color = "#11111b", -- CORREGIDO
+		},
+
+		-- Pestaña INACTIVA
+		inactive_tab = {
+			bg_color = "#313244", -- CORREGIDO
+			fg_color = "#a6adc8", -- CORREGIDO
+		},
+
+		-- También aplica a new_tab
+		new_tab = {
+			bg_color = "#313244", -- CORREGIDO
+			fg_color = "#cba6f7", -- CORREGIDO
+		},
+	},
 }
 
 -- This is where you actually apply your config choices
@@ -114,6 +148,12 @@ config.window_padding = {
 	left = 0,
 }
 
+-- cerrar window sin confirmación
+config.window_close_confirmation = "NeverPrompt" -- ¡VALOR CORRECTO!
+
+-- Quita la barra de título, dejando solo el contenido
+config.window_decorations = "NONE"
+--
 -- Set the terminal font
 config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
 
@@ -123,12 +163,12 @@ config.max_fps = 240 -- hack for smoothness
 config.enable_kitty_graphics = true
 
 -- Background with Transparency
-config.window_background_opacity = 0.60 -- Adjust this value as needed
+config.window_background_opacity = 0.20 -- Adjust this value as needed
 config.macos_window_background_blur = 2 -- Adjust this value as needed
 config.win32_system_backdrop = "Acrylic" -- Only Works in Windows
 
 -- Font Size
-config.font_size = 15.0
+config.font_size = 14.5
 
 -- Smooth hack
 config.max_fps = 240
@@ -152,5 +192,22 @@ config.enable_scroll_bar = false
 -- end
 
 -- and finally, return the configuration to wezterm
+--------------------------------------------------------
+---------Estilo de pestanas
+--------------------------------------------------------
+-- Coloca la barra de pestañas en la parte inferior
+config.tab_bar_at_bottom = true
+
+-- Oculta la barra de pestañas si hay menos de 2 pestañas abiertas
+-- (Similar a tab_bar_min_tabs 2 en Kitty)
+config.hide_tab_bar_if_only_one_tab = true -- (Ya la tenías, pero la mantenemos)
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	local title = tab.title or ""
+	local formatted_title = string.format(" %d: %s", tab.tab_index + 1, title)
+	return {
+		{ Text = formatted_title },
+	}
+end)
 
 return config
