@@ -54,7 +54,7 @@ config.colors = {
 	cursor_bg = "#92A2D5", -- ca: blue lavender (cursor background)
 	cursor_fg = "#C9C7CD", -- na: main text (cursor foreground)
 	cursor_border = "#92A2D5", -- ca: blue lavender (cursor border)
-
+	--
 	-- --- Selection colors ---
 	selection_fg = "#C9C7CD", -- na: main text (selection foreground)
 	selection_bg = "#3B4252", -- gr: dark gray (selection background)
@@ -124,7 +124,7 @@ config.colors = {
 -- Fuente principal
 -- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
 config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Regular" })
-config.font_size = 16.0
+config.font_size = 15.0
 config.line_height = 1.1
 
 -- ================================================================= --
@@ -138,6 +138,17 @@ config.window_padding = {
 	left = 0,
 	bottom = 0,
 }
+
+-- Un valor en milisegundos
+config.cursor_blink_rate = 750
+
+-- Esto controla la curva de animación para la entrada (inicio del movimiento).
+config.cursor_blink_ease_in = "EaseIn"
+-- Esto controla la curva de animación para la salida (fin del movimiento).
+config.cursor_blink_ease_out = "EaseOut"
+--
+-- Esto activará el parpadeo visible y la animación suave
+config.default_cursor_style = "BlinkingBlock"
 
 -- Opacidad del fondo de la ventana (para que se vea el fondo de pantalla)
 config.window_background_opacity = 0.20
