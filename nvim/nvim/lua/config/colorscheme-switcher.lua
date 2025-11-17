@@ -4,8 +4,8 @@ local ColorschemeSwitcher = {}
 -- 1. Lista de todos los temas (debe coincidir con los archivos .lua en plugins/colorschemes/)
 ColorschemeSwitcher.themes = {
   -- ➡️ COLOCA AQUÍ EL TEMA QUE QUIERES COMO DEFECTO ⬅️
-  "rose-pine",
   "kanagawa",
+  "rose-pine",
   "catppuccin",
   "tokyonight",
   "gruvbox",

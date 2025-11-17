@@ -50,16 +50,6 @@ return {
     },
   },
 
-  -- Plugin: lualine.nvim (¡ACTUALIZADO!)
-  -- URL: https://github.com/nvim-lualine/lualine.nvim
-  -- Descripción: Una barra de estado ultrarrápida y fácil de configurar.
-  -- -----------------------------------------------
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy", -- Carga perezosa
-    requires = { "nvim-tree/nvim-web-devicons", opt = true }, -- Dependencia opcional para íconos
-    -- ⚠️ NOTA: El bloque 'opts' ha sido removido, la configuración se hará en 'colorscheme.lua'
-  },
   -- Plugin: incline.nvim (Bloque FINAL y ESTABLE)
   {
     "b0o/incline.nvim",
@@ -114,22 +104,6 @@ return {
         end,
         group = vim.api.nvim_create_augroup("InclineFTExclude", { clear = true }),
         pattern = "*",
-      })
-    end,
-  },
-
-  -- Plugin: mini.nvim (Mini.animate)
-  -- URL: https://github.com/echasnovski/mini.nvim
-  -- Descripción: Colección de plugins Lua modulares y rápidos.
-  {
-    "nvim-mini/mini.nvim", -- <-- ¡Nombre actualizado!
-    version = false, -- Usa la última versión
-    config = function()
-      require("mini.animate").setup({
-        resize = { enable = false }, -- Deshabilita animaciones de redimensionamiento
-        open = { enable = false }, -- Deshabilita animaciones de apertura
-        close = { enable = false }, -- Deshabilita animaciones de cierre
-        scroll = { enable = false }, -- Deshabilita animaciones de desplazamiento
       })
     end,
   },
