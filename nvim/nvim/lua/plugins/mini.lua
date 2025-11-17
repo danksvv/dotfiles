@@ -10,21 +10,24 @@ return {
       })
     end,
   },
+  -- ... (Bloque de mini.animate)
 
   -- (2) Configuración central del suite 'nvim-mini/mini.nvim'
-  -- (Aquí fusionamos todas las configuraciones de editor.lua)
   {
     "nvim-mini/mini.nvim",
-    -- 'event' puede ayudar a que se cargue solo cuando sea necesario
+    -- 💡 CORRECCIÓN: Añadir la dependencia requerida por mini.comment
+    dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+
     event = "BufReadPre",
     config = function()
       -- Mini.pairs
       require("mini.pairs").setup({})
 
-      -- Mini.comment
+      -- Mini.comment (Este bloque es el que necesita la dependencia)
       require("mini.comment").setup({
         options = {
           custom_commentstring = function()
+            -- El error se genera aquí
             return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
           end,
         },
