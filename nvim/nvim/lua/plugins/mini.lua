@@ -1,21 +1,10 @@
 return {
-  -- (1) Configuración de mini.animate
-  -- (Mantenemos la definición existente y completa de mini.animate)
-  {
-    "nvim-mini/mini.animate",
-    config = function()
-      require("mini.animate").setup({
-        cursor = { duration = 250, style = "in_out_quad" },
-        -- Puedes añadir scroll o win_switch si los necesitas en el futuro
-      })
-    end,
-  },
-  -- ... (Bloque de mini.animate)
+  -- 💡 Se ha eliminado el bloque de nvim-mini/mini.animate
 
   -- (2) Configuración central del suite 'nvim-mini/mini.nvim'
   {
     "nvim-mini/mini.nvim",
-    -- 💡 CORRECCIÓN: Añadir la dependencia requerida por mini.comment
+    -- CORRECCIÓN: Dependencia para comentar
     dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
 
     event = "BufReadPre",
@@ -27,7 +16,6 @@ return {
       require("mini.comment").setup({
         options = {
           custom_commentstring = function()
-            -- El error se genera aquí
             return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
           end,
         },
