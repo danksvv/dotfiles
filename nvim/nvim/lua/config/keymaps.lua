@@ -163,3 +163,45 @@ vim.keymap.set(
   RunNcdu,
   { desc = "Shell: Ejecutar Ncdu (dug)" }
 )
+-- ==========================================================
+-- ## Ayuda Rápida de Comandos (SOLUCIÓN FINAL: Split & Render)
+-- ==========================================================
+
+-- 1. Define la ruta de tu archivo de ayuda
+local help_file = vim.fn.stdpath("config") .. "/user/help_commands.md"
+
+-- 2. Función para abrir el archivo en un split vertical con renderizado
+local function ShowHelp()
+  -- Verifica si el archivo existe
+  if vim.fn.filereadable(help_file) ~= 1 then
+    vim.notify("Archivo de ayuda no encontrado en: " .. help_file, vim.log.levels.WARN)
+    return
+  end
+
+  -- Abrir el archivo en un buffer temporal y en un nuevo split vertical
+  vim.cmd.vsplit(help_file)
+
+  -- Mover el cursor a la nueva ventana (derecha)
+  vim.cmd("wincmd l")
+
+  -- Configurar opciones del buffer para solo lectura y renderizado
+  vim.bo.buflisted = false -- No mostrar en la lista de buffers
+  vim.bo.swapfile = false -- No crear archivo de swap
+  vim.bo.modifiable = false -- No se puede modificar
+  vim.bo.readonly = true -- Solo lectura
+  vim.bo.filetype = "markdown" -- Asegura que el tipo de archivo sea markdown
+
+  -- Activar el renderizado de Markdown (Si el plugin existe)
+  -- Esto garantiza que el markdown se vea bien formateado
+  local markdown_render_ok, rm = pcall(require, "render-markdown")
+  if markdown_render_ok and rm.render_buffer then
+    rm.render_buffer(vim.api.nvim_get_current_buf())
+  end
+
+  -- Volver al modo normal y mover el foco a la ventana anterior (izquierda)
+  -- Esto permite que el usuario pueda empezar a trabajar inmediatamente.
+  vim.cmd("wincmd h")
+end
+
+-- 3. Asigna el atajo en modo normal
+vim.keymap.set("n", "<leader>h", ShowHelp, { desc = "Mostrar Guía de Comandos (Help/Render)" })

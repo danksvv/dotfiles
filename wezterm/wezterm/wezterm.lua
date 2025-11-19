@@ -32,7 +32,7 @@ if background_path ~= "" then
 			},
 			width = "100%",
 			height = "100%",
-			opacity = 8.5, -- No afecta la opacidad del fondo, solo el color HSB
+			opacity = 9.0, -- No afecta la opacidad del fondo, solo el color HSB
 			hsb = {
 				brightness = 0.01,
 				saturation = 0.1,
@@ -123,8 +123,9 @@ config.colors = {
 
 -- Fuente principal
 -- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
-config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Regular" })
-config.font_size = 15.0
+config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", style = "Italic", stretch = "SemiExpanded" })
+-- config.font = wezterm.font("BlexMono Nerd Font Mono", { weight = "Medium" })
+config.font_size = 15.5
 config.line_height = 1.1
 
 -- ================================================================= --
@@ -154,7 +155,7 @@ config.default_cursor_style = "BlinkingBlock"
 config.window_background_opacity = 0.20
 
 -- Blur del fondo (Solo Mac OS)
-config.macos_window_background_blur = 5
+config.macos_window_background_blur = 2
 
 -- Estilo de fondo (Solo Windows)
 config.win32_system_backdrop = "Acrylic"
