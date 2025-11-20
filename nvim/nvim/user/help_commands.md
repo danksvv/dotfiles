@@ -36,9 +36,9 @@
 
 Este es un proceso de múltiples pasos para reemplazar rápidamente una palabra en varias ocurrencias.
 
-1.  **Selección:** En modo **NORMAL**, sitúate sobre la palabra y pulsa `Shift` + `*` para seleccionar todas las ocurrencias en el documento.
-2.  **Edición:** Usa `c` + `g` + `n`. Esto te lleva al modo **INSERTAR**, borra la palabra actual, y puedes escribir la sustituta.
-3.  **Aplicación Recursiva:** Sal del modo **INSERTAR**. En modo **NORMAL**, pulsa `n` + `.` para saltar a la siguiente ocurrencia y aplicar el mismo reemplazo recursivamente.
+1. **Selección:** En modo **NORMAL**, sitúate sobre la palabra y pulsa `Shift` + `*` para seleccionar todas las ocurrencias en el documento.
+2. **Edición:** Usa `c` + `g` + `n`. Esto te lleva al modo **INSERTAR**, borra la palabra actual, y puedes escribir la sustituta.
+3. **Aplicación Recursiva:** Sal del modo **INSERTAR**. En modo **NORMAL**, pulsa `n` + `.` para saltar a la siguiente ocurrencia y aplicar el mismo reemplazo recursivamente.
 
 ---
 
@@ -48,7 +48,7 @@ Este es un proceso de múltiples pasos para reemplazar rápidamente una palabra 
 | :------------------- | :------------------ | ---------------------------------------------------- | ----------------- | ------------------------------------------------------------- |
 | `<space>` + `H`      | **Guardar Archivo** | Guarda el archivo actual en la lista de Harpoon.     |
 | `<space>` + `h`      | Mostrar Lista       | Muestra la lista de archivos guardados (marcadores). |
-| `<space>` + `1` \*\* | ** `2` **           | ** `3` **...\*\*                                     | Navegación Rápida | Va directamente al archivo guardado según su número de orden. |
+| `<space>` + `1` \*\* | **`2`**           | **`3`**...\*\*                                     | Navegación Rápida | Va directamente al archivo guardado según su número de orden. |
 
 ---
 
@@ -59,3 +59,17 @@ Este es un proceso de múltiples pasos para reemplazar rápidamente una palabra 
 | `<selección>` + `g` + `s` + `a` + **`'`** | Selecciona una ocurrencia y la envuelve con comillas simples. | `word` $\to$ `'word'` |
 | `<selección>` + `g` + `s` + `a` + **`"`** | Selecciona una ocurrencia y la envuelve con comillas dobles.  | `word` $\to$ `"word"` |
 | `<selección>` + `g` + `s` + `a` + **`{`** | Selecciona una ocurrencia y la envuelve con llaves.           | `word` $\to$ `{word}` |
+
+---
+
+## 💎 Obsidian & Markdown
+
+| Atajo                 | Descripción            | Acción                                                                    |
+| :-------------------- | :--------------------- | :------------------------------------------------------------------------ |
+| `<space>` + `o` + `t` | **Insertar Plantilla** | Abre Telescope para elegir e insertar una plantilla (`daily`, `default`). |
+| `<space>` + `c` + `h` | Toggle Checkbox        | Marca o desmarca una tarea (`- [ ]` $\leftrightarrow$ `- [x]`).           |
+| `<Enter>`             | Acción Inteligente     | Sigue enlaces wiki, abre URLs o crea nuevas líneas en listas.             |
+| `g` + `f`             | **Go File**            | Sigue el enlace bajo el cursor (abre la nota o URL vinculada).            |
+| `<space>` + `m` + `p` | Markdown Preview       | Abre una vista previa en vivo en el navegador web.                        |
+| `<space>` + `m` + `s` | Stop Preview           | Detiene el servidor de vista previa del navegador.                        |
+| `<space>` + `u` + `m` | Toggle Render          | Activa/Desactiva el estilo visual "bonito" (iconos/tablas) en el editor.  |

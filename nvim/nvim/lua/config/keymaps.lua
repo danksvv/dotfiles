@@ -171,6 +171,13 @@ local function ShowHelp()
   -- Esto permite que el usuario pueda empezar a trabajar inmediatamente.
   vim.cmd("wincmd h")
 end
+-- ================================================
+-- -- ## Mapeo para abrir Markdown
+-- ================================================
+-- Uso <leader>mp (Markdown Preview)
+vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreview<cr>", { desc = "Markdown Preview" })
+-- Opcional: Para cerrarlo
+vim.keymap.set("n", "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", { desc = "Stop Markdown Preview" })
 
 -- 3. Asigna el atajo en modo normal
 vim.keymap.set("n", "<leader>h", ShowHelp, { desc = "Mostrar Guía de Comandos (Help/Render)" })
