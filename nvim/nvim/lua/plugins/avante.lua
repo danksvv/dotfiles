@@ -2,55 +2,72 @@ return {
   "yetone/avante.nvim",
   event = "VeryLazy",
   lazy = false,
-  version = false, -- Usar siempre la última versión
+  version = false,
   opts = {
-    -- 1. PROVEEDOR PRINCIPAL
+    -- 1. PROVEEDOR: Usamos Gemini para la inteligencia
     provider = "gemini",
-
-    -- 2. AQUÍ ESTÁ LA CORRECCIÓN (Nueva estructura obligatoria)
     providers = {
       gemini = {
-        model = "gemini-2.5-flash",
+        -- Usamos la versión que confirmamos que existe en tu cuenta
+        model = "gemini-2.0-flash-001",
+        -- Temperatura 0 para que sea preciso en código (menos creativo, más ingeniero)
         temperature = 0,
-        max_tokens = 4096,
+        -- Aumentamos tokens para respuestas largas y análisis profundos
+        max_tokens = 8192,
       },
     },
 
-    -- 3. PERSONALIDAD (Danksvv vive aquí)
+    -- 2. PERSONALIDAD (Tu Sysadmin experto)
     system_prompt = [[
       ERES DANKSVV, UN SYSADMIN EXPERTO Y CLON DEL USUARIO.
-      
+
       IDENTIDAD:
       - Hablas ESPAÑOL con jerga de PERÚ y ESPAÑA (causa, tío, bacán, hostia).
-      - Eres un experto en Clean Code y Refactorización.
-      - Odias las explicaciones largas. Vas al grano.
+      - Eres un experto en Clean Code, Refactorización y Seguridad.
+      - Odias las explicaciones largas y el relleno. Vas directo al grano.
       - Cuando edites código, mantén la estructura original y solo aplica lo necesario.
+      - Si ves código basura, dilo sin pelos en la lengua pero arréglalo.
     ]],
 
-    -- 4. COMPORTAMIENTO
     behaviour = {
+      -- IMPORTANTE: Apagamos esto para que Supermaven haga el trabajo rápido
       auto_suggestions = false,
+
       auto_set_highlight_group = true,
       auto_set_keymaps = true,
       auto_apply_diff_after_generation = false,
       support_paste_from_clipboard = true,
     },
 
-    -- 5. TECLAS (Estilo Cursor)
+    -- 3. MAPPINGS (Para interactuar con el Chat)
     mappings = {
+      -- Preguntar a Gemini sobre el código seleccionado
+      ask = "<leader>aa",
+      edit = "<leader>ae",
+      refresh = "<leader>ar",
+
       diff = {
-        ours = "co", -- Quedarse con lo tuyo
-        theirs = "ct", -- Quedarse con lo de la IA
-        all_theirs = "ca", -- Aceptar TODO
-        both = "cb", -- Ambos
-        cursor = "cc", -- Poner cursor
+        ours = "co",
+        theirs = "ct",
+        all_theirs = "ca",
+        both = "cb",
+        cursor = "cc",
         next = "]x",
         prev = "[x",
       },
     },
+
+    -- Configuración visual
+    windows = {
+      position = "right", -- El chat saldrá a la derecha
+      width = 30,
+      sidebar_header = {
+        align = "center",
+        rounded = true,
+      },
+    },
   },
 
-  -- Dependencias visuales
   dependencies = {
     "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
@@ -69,6 +86,5 @@ return {
       },
     },
   },
-
   build = "make",
 }
