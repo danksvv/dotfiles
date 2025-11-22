@@ -18,7 +18,7 @@ local background_path = ""
 
 -- Lógica condicional para asignar la ruta
 if os_name:find("darwin") then -- Mac OS
-	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/samurai004-gp.png"
+	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/ying-yang001-gp.png"
 elseif os_name:find("linux") then -- Linux (Ubuntu)
 	background_path = "/home/danks/Pictures/Wallpapers/samurai002-gp.png"
 end
@@ -32,10 +32,10 @@ if background_path ~= "" then
 			},
 			width = "100%",
 			height = "100%",
-			opacity = 9.0, -- No afecta la opacidad del fondo, solo el color HSB
+			opacity = 3.0, -- No afecta la opacidad del fondo, solo el color HSB
 			hsb = {
 				brightness = 0.01,
-				saturation = 0.1,
+				saturation = 0.2,
 			},
 		},
 	}
