@@ -4,18 +4,23 @@ local ColorschemeSwitcher = {}
 -- 1. Lista de todos los temas (debe coincidir con los archivos .lua en plugins/colorschemes/)
 ColorschemeSwitcher.themes = {
   -- ➡️ COLOCA AQUÍ EL TEMA QUE QUIERES COMO DEFECTO ⬅️
-  "everforest",
+  "melange",
+  "dracula",
+  "github-theme", -- Requiere nombre de variante (ej. github_dark_dimmed)
   "kanagawa",
+  "onedark", -- Requiere require('onedark').load()
+  "oldworld",
+  "sakura",
+  "everforest",
   "onedark", -- Requiere require('onedark').load()
   "catppuccin",
   "rose-pine",
   "tokyonight",
   "gruvbox",
-  "dracula",
-  "github-theme", -- Requiere nombre de variante (ej. github_dark_dimmed)
-  "oldworld",
-  "sakura",
   "nightfox",
+  "moonfly",
+  "nightfly",
+  "molokai",
 }
 
 -- 2. Variables de estado y Almacenamiento

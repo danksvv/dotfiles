@@ -88,7 +88,10 @@ return {
   { "projekt0n/github-nvim-theme", name = "github-theme" },
   { "EdenEast/nightfox.nvim", name = "nightfox" },
   { "neanias/everforest-nvim", name = "everforest" },
-
+  { "bluz71/vim-moonfly-colors", name = "moonfly" }, -- Variantes de Solarized/Dracula (popular)
+  { "bluz71/vim-nightfly-guicolors", name = "nightfly" }, -- Hermano de Moonfly, más contrastado
+  { "savq/melange-nvim", name = "melange" }, -- Alternativa elegante a Gruvbox
+  { "tomasr/molokai", name = "molokai" }, -- Sin soporte de setup, simple
   -- 3. Configuración del Núcleo de LazyVim
   {
     "LazyVim/LazyVim",

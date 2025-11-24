@@ -85,7 +85,7 @@ fi
 
 # --- Aliases ---
 alias ls='lsd'
-alias la='ls -a'
+alias la='/bin/ls -a | grep "^\."'
 alias lt='ls --tree'
 
 # kittens
