@@ -95,23 +95,24 @@ config.colors = {
 
 	-- --- TAB BAR Colors ---
 	tab_bar = {
-		background = "#1e1e2e", -- Fondo general de la barra
+		-- Fondo de la barra INVISIBLE (para que se vea el wallpaper detrás de las pestañas)
+		background = "rgba(0, 0, 0, 0.0)",
 
 		-- Pestaña ACTIVA
 		active_tab = {
-			bg_color = "#cba6f7",
-			fg_color = "#11111b",
+			bg_color = "rgba(203, 166, 247, 0.4)", -- Morado translúcido
+			fg_color = "#ffffff",
 		},
 
 		-- Pestaña INACTIVA
 		inactive_tab = {
-			bg_color = "#313244",
+			bg_color = "rgba(49, 50, 68, 0.4)", -- Gris oscuro translúcido
 			fg_color = "#a6adc8",
 		},
 
-		-- Pestaña NUEVA
+		-- Pestaña NUEVA (botón +)
 		new_tab = {
-			bg_color = "#313244",
+			bg_color = "rgba(49, 50, 68, 0.4)",
 			fg_color = "#cba6f7",
 		},
 	},
@@ -191,21 +192,70 @@ config.enable_kitty_graphics = true
 -- 6. AJUSTES DE BARRA DE PESTAÑAS
 -- ================================================================= --
 
+-- Desactivamos el estilo "Fancy" (retro) para tener pestañas planas y limpias
+config.use_fancy_tab_bar = false
+
 -- Coloca la barra de pestañas en la parte inferior
 config.tab_bar_at_bottom = true
 
--- Oculta la barra de pestañas si solo hay una abierta
+-- Ancho máximo de la pestaña (para que no ocupen toda la pantalla si la ruta es larga)
+config.tab_max_width = 32
+
+-- Ocultar barra si solo hay una pestaña (puedes ponerlo en true si prefieres)
 config.hide_tab_bar_if_only_one_tab = true
 
--- Formato personalizado del título de la pestaña
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	local title = tab.title or ""
-	local formatted_title = string.format(" %d: %s", tab.tab_index + 1, title)
-	return {
-		{ Text = formatted_title },
-	}
-end)
+-- Función auxiliar para obtener el directorio actual de forma limpia
+local function get_current_working_dir(tab)
+	-- Si no hay panel activo, devolver punto
+	if not tab.active_pane then
+		return "."
+	end
 
+	-- Intentar obtener la URI del archivo actual
+	local cwd_uri = tab.active_pane.current_working_dir
+	if not cwd_uri then
+		return "."
+	end
+
+	local file_path = cwd_uri.file_path
+	if not file_path then
+		return "."
+	end
+
+	-- Obtener el HOME del sistema para reemplazarlo por ~
+	local home_dir = os.getenv("HOME")
+
+	-- Reemplazar el inicio de la ruta con ~ si coincide con HOME
+	if file_path:find(home_dir, 1, true) == 1 then
+		file_path = file_path:gsub(home_dir, "~")
+	end
+
+	return file_path
+end
+
+-- Formato personalizado del título de la pestaña (Ruta + Transparencia)
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	-- Obtenemos la ruta limpia
+	local cwd = get_current_working_dir(tab)
+
+	-- Le añadimos espacio alrededor para que se vea mejor
+	local title = string.format(" %s ", cwd)
+
+	-- Definimos los colores aquí para sobreescribir cualquier cosa y forzar la transparencia
+	if tab.is_active then
+		return {
+			{ Background = { Color = "rgba(203, 166, 247, 0.4)" } }, -- Fondo Activo (Morado translúcido)
+			{ Foreground = { Color = "#ffffff" } }, -- Texto blanco brillante
+			{ Text = title },
+		}
+	else
+		return {
+			{ Background = { Color = "rgba(49, 50, 68, 0.4)" } }, -- Fondo Inactivo (Gris translúcido)
+			{ Foreground = { Color = "#a6adc8" } }, -- Texto grisáceo
+			{ Text = title },
+		}
+	end
+end)
 -- ================================================================= --
 -- 7. ATAJOS DE TECLADO (Keybindings)
 -- ================================================================= --
