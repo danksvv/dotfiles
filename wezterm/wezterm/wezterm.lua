@@ -18,7 +18,7 @@ local background_path = ""
 
 -- Lógica condicional para asignar la ruta
 if os_name:find("darwin") then -- Mac OS
-	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/ying-yang001-gp.png"
+	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/samurai003-gp.png"
 elseif os_name:find("linux") then -- Linux (Ubuntu)
 	background_path = "/home/danks/Pictures/Wallpapers/samurai002-gp.png"
 end
@@ -32,88 +32,86 @@ if background_path ~= "" then
 			},
 			width = "100%",
 			height = "100%",
-			opacity = 3.0, -- No afecta la opacidad del fondo, solo el color HSB
+			opacity = 3.3, -- No afecta la opacidad del fondo, solo el color HSB
 			hsb = {
 				brightness = 0.01,
-				saturation = 0.2,
+				saturation = 0.1,
 			},
 		},
 	}
 end
 
 -- ================================================================= --
--- 2. AJUSTES VISUALES: COLORES (OldWorld Theme y Tab Bar)
+-- 2. AJUSTES VISUALES: COLORES (MATCHING LS_COLORS NEON)
 -- ================================================================= --
 
 config.colors = {
 	-- --- Base colors ---
-	foreground = "#C9C7CD", -- na: main text (light gray)
-	background = "#000000", -- bl: dark background (almost black)
+	foreground = "#ffffff", -- Blanco puro para máximo contraste neón
+	background = "#000000", -- Negro puro (Tu fondo actual)
 
 	-- --- Cursor colors ---
-	cursor_bg = "#92A2D5", -- ca: blue lavender (cursor background)
-	cursor_fg = "#C9C7CD", -- na: main text (cursor foreground)
-	cursor_border = "#92A2D5", -- ca: blue lavender (cursor border)
-	--
+	cursor_bg = "#00afff", -- Azul eléctrico (Index 39)
+	cursor_fg = "#000000",
+	cursor_border = "#00afff",
+
 	-- --- Selection colors ---
-	selection_fg = "#C9C7CD", -- na: main text (selection foreground)
-	selection_bg = "#3B4252", -- gr: dark gray (selection background)
+	selection_fg = "#000000",
+	selection_bg = "#afff00", -- Verde lima (Index 154) para resaltar selección
 
 	-- --- UI colors ---
-	scrollbar_thumb = "#4C566A", -- nb: medium gray (scrollbar thumb)
-	split = "#4C566A", -- nb: medium gray (split line)
+	scrollbar_thumb = "#333333",
+	split = "#333333",
 
-	-- --- ANSI colors ---
+	-- --- ANSI colors (Base) ---
 	ansi = {
-		"#000000", -- Black: bl: dark background (almost black)
-		"#EA83A5", -- Red: ia: intense pink (errors)
-		"#90B99F", -- Green: va: soft green (success)
-		"#E6B99D", -- Yellow: ca: beige (warnings)
-		"#85B5BA", -- Blue: va: light blue-green (information)
-		"#92A2D5", -- Magenta: ca: blue lavender (highlight)
-		"#85B5BA", -- Cyan: va: light blue-green (links)
-		"#C9C7CD", -- White: na: main text (light gray)
+		"#000000", -- Black
+		"#ff0000", -- Red: (Index 196) Rojo puro neón
+		"#afff00", -- Green: (Index 154) Tu color de ejecutables/scripts
+		"#ffaf00", -- Yellow: (Index 214) Tu color de .zip/.tar (Naranja)
+		"#00afff", -- Blue: (Index 39) Tu color de DIRECTORIOS
+		"#ff00ff", -- Magenta: (Index 201) Tu color de imágenes/media
+		"#00ffff", -- Cyan: (Index 51) Tu color de enlaces
+		"#e4e4e4", -- White: Un blanco grisáceo suave
 	},
 
-	-- --- Bright ANSI colors ---
+	-- --- Bright ANSI colors (Bold) ---
 	brights = {
-		"#4C566A", -- Bright Black: nb: medium gray (bright black)
-		"#EA83A5", -- Bright Red: ia: intense pink (bright red)
-		"#90B99F", -- Bright Green: va: soft green (bright green)
-		"#E6B99D", -- Bright Yellow: ca: beige (bright yellow)
-		"#85B5BA", -- Bright Blue: va: light blue-green (bright blue)
-		"#92A2D5", -- Bright Magenta: ca: blue lavender (bright magenta)
-		"#85B5BA", -- Bright Cyan: va: light blue-green (bright cyan)
-		"#C9C7CD", -- Bright White: na: main text (bright white)
+		"#555555", -- Bright Black
+		"#ff5f5f", -- Bright Red: (Index 203) Un rojo un poco más suave
+		"#d7ff00", -- Bright Green: (Index 190) Aún más lima
+		"#ffff00", -- Bright Yellow: Amarillo puro (Index 11)
+		"#5fafff", -- Bright Blue: (Index 75) Un azul cielo un poco más suave
+		"#ff5fff", -- Bright Magenta: (Index 207) Rosa pastel neón
+		"#87ffff", -- Bright Cyan: (Index 123) Cian muy claro
+		"#ffffff", -- Bright White: Blanco puro
 	},
 
-	-- --- Indexed colors ---
+	-- --- Indexed colors (Neon Extension) ---
 	indexed = {
-		[16] = "#F5A191", -- ca: light peach (orange)
-		[17] = "#E29ECA", -- ia: soft pink (pink)
+		-- Index 16: Generalmente usado como Naranja.
+		-- Lo igualamos a tu color 214 (archivos .zip/.tar)
+		[16] = "#ffaf00",
+
+		-- Index 17: Generalmente usado como un Rojo oscuro o Rosa secundario.
+		-- Lo igualamos a tu color 201 (archivos .jpg/.png) para mantener el neón.
+		[17] = "#ff00ff",
 	},
-
-	-- --- TAB BAR Colors ---
+	--
+	-- Ajustes de pestañas para que no estorben visualmente
 	tab_bar = {
-		-- Fondo de la barra INVISIBLE (para que se vea el wallpaper detrás de las pestañas)
 		background = "rgba(0, 0, 0, 0.0)",
-
-		-- Pestaña ACTIVA
 		active_tab = {
-			bg_color = "rgba(203, 166, 247, 0.4)", -- Morado translúcido
+			bg_color = "rgba(0, 175, 255, 0.4)", -- Azul (Index 39) translúcido
 			fg_color = "#ffffff",
 		},
-
-		-- Pestaña INACTIVA
 		inactive_tab = {
-			bg_color = "rgba(49, 50, 68, 0.4)", -- Gris oscuro translúcido
-			fg_color = "#a6adc8",
+			bg_color = "rgba(50, 50, 50, 0.4)",
+			fg_color = "#aaaaaa",
 		},
-
-		-- Pestaña NUEVA (botón +)
 		new_tab = {
-			bg_color = "rgba(49, 50, 68, 0.4)",
-			fg_color = "#cba6f7",
+			bg_color = "rgba(50, 50, 50, 0.4)",
+			fg_color = "#afff00", -- Verde (Index 154)
 		},
 	},
 }
@@ -189,73 +187,84 @@ config.enable_kitty_graphics = true
 -- end
 
 -- ================================================================= --
--- 6. AJUSTES DE BARRA DE PESTAÑAS
+-- 6. AJUSTES DE BARRA DE PESTAÑAS (Estilo Kitty Bubble)
 -- ================================================================= --
 
--- Desactivamos el estilo "Fancy" (retro) para tener pestañas planas y limpias
+-- 1. Desactivar estilo por defecto y asegurar fondo transparente
 config.use_fancy_tab_bar = false
-
--- Coloca la barra de pestañas en la parte inferior
-config.tab_bar_at_bottom = true
-
--- Ancho máximo de la pestaña (para que no ocupen toda la pantalla si la ruta es larga)
+config.tab_bar_at_bottom = true -- O false, según prefieras
 config.tab_max_width = 32
+config.hide_tab_bar_if_only_one_tab = true -- Cambiar a true si prefieres
 
--- Ocultar barra si solo hay una pestaña (puedes ponerlo en true si prefieres)
-config.hide_tab_bar_if_only_one_tab = true
+-- Asegurar que el fondo de la barra sea transparente
+config.colors.tab_bar = {
+	background = "rgba(0,0,0,0)",
+}
 
--- Función auxiliar para obtener el directorio actual de forma limpia
-local function get_current_working_dir(tab)
-	-- Si no hay panel activo, devolver punto
-	if not tab.active_pane then
-		return "."
-	end
+-- 2. Definir los caracteres redondeados (Requiere Nerd Fonts)
+local left_sep = wezterm.nerdfonts.ple_left_half_circle_thick -- 
+local right_sep = wezterm.nerdfonts.ple_right_half_circle_thick -- 
 
-	-- Intentar obtener la URI del archivo actual
-	local cwd_uri = tab.active_pane.current_working_dir
-	if not cwd_uri then
-		return "."
-	end
-
-	local file_path = cwd_uri.file_path
-	if not file_path then
-		return "."
-	end
-
-	-- Obtener el HOME del sistema para reemplazarlo por ~
-	local home_dir = os.getenv("HOME")
-
-	-- Reemplazar el inicio de la ruta con ~ si coincide con HOME
-	if file_path:find(home_dir, 1, true) == 1 then
-		file_path = file_path:gsub(home_dir, "~")
-	end
-
-	return file_path
-end
-
--- Formato personalizado del título de la pestaña (Ruta + Transparencia)
+-- 3. Función de formateo avanzado
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	-- Obtenemos la ruta limpia
-	local cwd = get_current_working_dir(tab)
+	-- Identificar si la pestaña está activa
+	local is_active = tab.is_active
 
-	-- Le añadimos espacio alrededor para que se vea mejor
-	local title = string.format(" %s ", cwd)
+	-- Colores basados en tu captura (Lavender vs Dark Gray)
+	-- Puedes cambiar estos hex por tus colores Neon si prefieres
+	local active_bg = "#cba6f7" -- Lavanda (Pestaña activa)
+	local active_fg = "#11111b" -- Texto oscuro (casi negro)
 
-	-- Definimos los colores aquí para sobreescribir cualquier cosa y forzar la transparencia
-	if tab.is_active then
-		return {
-			{ Background = { Color = "rgba(203, 166, 247, 0.4)" } }, -- Fondo Activo (Morado translúcido)
-			{ Foreground = { Color = "#ffffff" } }, -- Texto blanco brillante
-			{ Text = title },
-		}
-	else
-		return {
-			{ Background = { Color = "rgba(49, 50, 68, 0.4)" } }, -- Fondo Inactivo (Gris translúcido)
-			{ Foreground = { Color = "#a6adc8" } }, -- Texto grisáceo
-			{ Text = title },
-		}
-	end
+	local inactive_bg = "#313244" -- Gris oscuro (Pestaña inactiva)
+	local inactive_fg = "#cdd6f4" -- Texto claro
+
+	-- Seleccionar colores según estado
+	local bg_color = is_active and active_bg or inactive_bg
+	local fg_color = is_active and active_fg or inactive_fg
+
+	-- Obtener título limpio (lógica que ya tenías)
+	local title = " " .. (tab.active_pane.title or "Terminal") .. " "
+
+	-- Definimos los componentes por separado
+	local icon_term = ""
+	local icon_user = "󰁕"
+	local index_num = string.format("%d ", tab.tab_index + 1)
+
+	-- Retornar la estructura visual (PIEZA POR PIEZA)
+	return {
+		-- 1. Borde Izquierdo (Semicírculo)
+		{ Background = { Color = "rgba(0,0,0,0)" } },
+		{ Foreground = { Color = bg_color } },
+		{ Text = left_sep },
+
+		-- 2. ICONO 1: Terminal (Con NEGRITA para que se vea más lleno)
+		{ Background = { Color = bg_color } },
+		{ Foreground = { Color = fg_color } },
+		{ Attribute = { Intensity = "Bold" } }, -- <--- TRUCO DE TAMAÑO
+		{ Text = icon_term .. " " }, -- Agregamos un espacio extra
+		{ Attribute = { Intensity = "Normal" } }, -- Reseteamos a normal
+
+		-- 3. Número del índice (Texto normal)
+		{ Text = index_num },
+
+		-- 4. ICONO 2: Usuario (Con NEGRITA)
+		{ Attribute = { Intensity = "Bold" } }, -- <--- TRUCO DE TAMAÑO
+		{ Text = icon_user },
+		{ Attribute = { Intensity = "Normal" } },
+
+		-- 5. Título del directorio
+		{ Text = title },
+
+		-- 6. Borde Derecho (Semicírculo)
+		{ Background = { Color = "rgba(0,0,0,0)" } },
+		{ Foreground = { Color = bg_color } },
+		{ Text = right_sep },
+
+		-- Espacio transparente final
+		{ Text = " " },
+	}
 end)
+--
 -- ================================================================= --
 -- 7. ATAJOS DE TECLADO (Keybindings)
 -- ================================================================= --

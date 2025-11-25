@@ -4,22 +4,21 @@ local ColorschemeSwitcher = {}
 -- 1. Lista de todos los temas (debe coincidir con los archivos .lua en plugins/colorschemes/)
 ColorschemeSwitcher.themes = {
   -- ➡️ COLOCA AQUÍ EL TEMA QUE QUIERES COMO DEFECTO ⬅️
-  "melange",
+  "gruvbox",
   "dracula",
-  "github-theme", -- Requiere nombre de variante (ej. github_dark_dimmed)
   "kanagawa",
+  "everforest",
+  "sakura",
+  "moonfly",
+  "nightfly",
+  "melange",
+  "github-theme", -- Requiere nombre de variante (ej. github_dark_dimmed)
   "onedark", -- Requiere require('onedark').load()
   "oldworld",
-  "sakura",
-  "everforest",
-  "onedark", -- Requiere require('onedark').load()
   "catppuccin",
   "rose-pine",
   "tokyonight",
-  "gruvbox",
   "nightfox",
-  "moonfly",
-  "nightfly",
   "molokai",
 }
 
@@ -92,9 +91,11 @@ function ColorschemeSwitcher.apply_theme(theme_name)
     end
 
     -- 💡 CORRECCIÓN PARA VARIANTES:
-    -- Solo aplicamos la convención 'theme-variant' si el tema NO es OneDark,
-    -- ya que el plugin onedark.nvim maneja la variante internamente sin cambiar el nombre del colorscheme.
-    if theme_name ~= "onedark" then
+    -- Lista de temas que cargan su variante internamente (sin cambiar el nombre del colorscheme).
+    -- Incluir 'onedark', 'gruvbox', y 'tokyonight'
+    local themes_to_exclude = { "onedark", "gruvbox", "tokyonight" }
+
+    if not vim.tbl_contains(themes_to_exclude, theme_name) then
       if theme_opts.variant and type(theme_opts.variant) == "string" then
         -- Ejemplo: kanagawa-dragon
         cmd_name = theme_name .. "-" .. theme_opts.variant

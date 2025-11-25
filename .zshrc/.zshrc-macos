@@ -65,7 +65,7 @@ export GOPATH="$HOME/.local/share/go"
 source "$HOME/.ls_themes.zsh"
 
 # Establece el tema que quieres usar por defecto al iniciar
-set_ls_theme "classic"
+set_ls_theme "neon"
 
 # ==============================================================================
 # SECCIÓN 4: 🚨 GESTIÓN DE SECRETOS 🚨
