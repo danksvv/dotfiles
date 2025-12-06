@@ -32,7 +32,7 @@ if background_path ~= "" then
 			},
 			width = "100%",
 			height = "100%",
-			opacity = 3.3, -- No afecta la opacidad del fondo, solo el color HSB
+			opacity = 2.8, -- No afecta la opacidad del fondo, solo el color HSB
 			hsb = {
 				brightness = 0.01,
 				saturation = 0.1,
@@ -122,9 +122,9 @@ config.colors = {
 
 -- Fuente principal
 -- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
-config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", style = "Italic", stretch = "SemiExpanded" })
+config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
 -- config.font = wezterm.font("BlexMono Nerd Font Mono", { weight = "Medium" })
-config.font_size = 15.5
+config.font_size = 14.5
 config.line_height = 1.1
 
 -- ================================================================= --

@@ -99,6 +99,9 @@ alias tx='tmux'
 alias py='python3'
 alias zj='zellij'
 
+# wezterm (terminal de escritorio)
+alias wcat='wezterm imgcat'
+
 # alias git 
 alias gitalias="git config --global --get-regexp alias"
 
