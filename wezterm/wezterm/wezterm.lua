@@ -18,7 +18,7 @@ local background_path = ""
 
 -- Lógica condicional para asignar la ruta
 if os_name:find("darwin") then -- Mac OS
-	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/samurai003-gp.png"
+	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/ninja-lobezno-gp.png"
 elseif os_name:find("linux") then -- Linux (Ubuntu)
 	background_path = "/home/danks/Pictures/Wallpapers/samurai002-gp.png"
 end
@@ -32,7 +32,7 @@ if background_path ~= "" then
 			},
 			width = "100%",
 			height = "100%",
-			opacity = 2.8, -- No afecta la opacidad del fondo, solo el color HSB
+			opacity = 3.0, -- No afecta la opacidad del fondo, solo el color HSB
 			hsb = {
 				brightness = 0.01,
 				saturation = 0.1,
@@ -121,10 +121,10 @@ config.colors = {
 -- ================================================================= --
 
 -- Fuente principal
--- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" })
-config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
--- config.font = wezterm.font("BlexMono Nerd Font Mono", { weight = "Medium" })
-config.font_size = 14.5
+config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
+-- config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
+-- config.font = wezterm.font("BlexMono Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
+config.font_size = 15.0
 config.line_height = 1.1
 
 -- ================================================================= --
@@ -151,7 +151,7 @@ config.cursor_blink_ease_out = "EaseOut"
 config.default_cursor_style = "BlinkingBlock"
 
 -- Opacidad del fondo de la ventana (para que se vea el fondo de pantalla)
-config.window_background_opacity = 0.20
+config.window_background_opacity = 0.2
 
 -- Blur del fondo (Solo Mac OS)
 config.macos_window_background_blur = 2
@@ -264,6 +264,24 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 		{ Text = " " },
 	}
 end)
+-- ================================================================= --
+-- NUEVA LÓGICA: Alternar Opacidad (CMD+U)
+-- ================================================================= --
+wezterm.on("toggle-opacity", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+
+	-- Si el override actual es nil (usando el valor de 'config.window_background_opacity'),
+	-- lo establece a 0.5 (transparente). Si es otro valor (e.g., 0.5), lo elimina (vuelve al valor por defecto 0.20).
+	if overrides.window_background_opacity then
+		-- Opacidad cuando está activado (más transparente que el valor 0.20 de la config global)
+		overrides.window_background_opacity = nil
+	else
+		-- Eliminar el override para volver a usar 'config.window_background_opacity = 0.20'
+		overrides.window_background_opacity = 5.0
+	end
+
+	window:set_config_overrides(overrides)
+end)
 --
 -- ================================================================= --
 -- 7. ATAJOS DE TECLADO (Keybindings)
@@ -304,5 +322,11 @@ config.keys = {
 	{ key = "DownArrow", mods = "CMD|SHIFT", action = wezterm.action.ActivatePaneDirection("Down") },
 	-- Zoom/Maximiza el panel activo
 	{ key = "Z", mods = "CMD", action = wezterm.action.TogglePaneZoomState },
+	-- Alternar la opacidad (función tipo iTerm2 Cmd+U)
+	{
+		key = "u",
+		mods = "CMD",
+		action = wezterm.action.EmitEvent("toggle-opacity"),
+	},
 }
 return config
