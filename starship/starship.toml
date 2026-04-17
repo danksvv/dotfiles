@@ -1,0 +1,294 @@
+# Configuration global settings
+add_newline = true
+palette = "neon"
+
+format = """\
+[╭╴](fg:arrow)\
+$os\
+$username\
+$directory\
+(\
+    $git_branch\
+    $git_status\
+)\
+(\
+    $python\
+    $conda\
+    $nodejs\
+    $docker_context\
+)\
+$cmd_duration\
+$fill\
+$time
+[╰─](fg:arrow)$character
+"""
+
+[fill]
+symbol = " 󰮯"
+style = "fg:arrow"
+disabled = false
+
+[palettes.old]
+arrow = "#353535"
+os = "#3778BF"
+os_admin = "#6A040F"
+directory = "#3F37C9"
+node = "green"
+time = "#177E89"
+git = "#B02B10"
+git_status = "#8B1D2C"
+python = "#3776AB"
+conda = "#3EB049"
+java = "#861215"
+rust = "#C33C00"
+clang = "#00599D"
+duration = "yellow"
+text_color = "#EDF2F4"
+text_light = "#EDF2F4"
+
+[palettes.normal]
+arrow = "#353535"
+os = "#2C3032"
+os_admin = "#6A040F"
+directory = "#363C3E"
+time = "#474D5C"
+node = "#F1DEA9"
+git = "#D0DBDA"
+git_status = "#DFEBED"
+python = "#F5CB5C"
+conda = "#3EB049"
+java = "#861215"
+rust = "#C33C00"
+clang = "#00599D"
+duration = "#F4FBFF"
+text_color = "#EDF2F4"
+text_light = "#26272A"
+
+[palettes.tokyonight]
+arrow = "#565f89"
+os = "#7aa2f7"
+os_admin = "#f7768e"
+directory = "#bb9af7"
+time = "#9ece6a"
+git = "#e0af68"
+git_status = "#f7768e"
+clang = "#7aa2f7"
+java = "#f7768e"
+python = "#e0af68"
+node = "#9ece6a"
+conda = "#7aa2f7"
+duration = "#e0af68"
+text_color = "#1a1b26"
+text_light = "#1a1b26"
+
+[palettes.catppuccin]
+arrow = "#45475a"
+os = "#89b4fa"
+os_admin = "#f38ba8"
+directory = "#b4befe"
+time = "#a6adc8"
+git = "#f9e2af"
+git_status = "#f38ba8"
+python = "#f9e2af"
+node = "#a6e3a1"
+conda = "#a6e3a1"
+java = "#eba0ac"
+rust = "#fab387"
+clang = "#89b4fa"
+duration = "#f5c2e7"
+text_color = "#cdd6f4"
+text_light = "#1e1e2e"
+
+[palettes.dracula]
+arrow = "#44475a"
+os = "#8be9fd"
+os_admin = "#ff5555"
+directory = "#bd93f9"
+time = "#6272a4"
+git = "#f1fa8c"
+git_status = "#ff79c6"
+python = "#f1fa8c"
+node = "#50fa7b"
+conda = "#50fa7b"
+java = "#ffb86c"
+rust = "#ffb86c"
+clang = "#8be9fd"
+duration = "#ff79c6"
+text_color = "#f8f8f2"
+text_light = "#282a36"
+
+[palettes.nordic]
+arrow = "#3b4252"
+os = "#81a1c1"
+os_admin = "#bf616a"
+directory = "#88c0d0"
+time = "#4c566a"
+git = "#ebcb8b"
+git_status = "#d08770"
+python = "#ebcb8b"
+node = "#a3be8c"
+conda = "#a3be8c"
+java = "#bf616a"
+rust = "#d08770"
+clang = "#81a1c1"
+duration = "#b48ead"
+text_color = "#eceff4"
+text_light = "#2e3440"
+
+[palettes.solarized]
+arrow = "#073642"
+os = "#268bd2"
+os_admin = "#dc322f"
+directory = "#2aa198"
+time = "#586e75"
+git = "#b58900"
+git_status = "#cb4b16"
+python = "#b58900"
+node = "#859900"
+conda = "#859900"
+java = "#d33682"
+rust = "#cb4b16"
+clang = "#268bd2"
+duration = "#6c71c4"
+text_color = "#839496"
+text_light = "#002b36"
+
+[palettes.gruvbox]
+arrow = "#3c3836"
+os = "#83a598"
+os_admin = "#fb4934"
+directory = "#8ec07c"
+time = "#665c54"
+git = "#fabd2f"
+git_status = "#fe8019"
+python = "#fabd2f"
+node = "#b8bb26"
+conda = "#b8bb26"
+java = "#d3869b"
+rust = "#fe8019"
+clang = "#83a598"
+duration = "#d3869b"
+text_color = "#ebdbb2"
+text_light = "#282828"
+
+[palettes.neon]
+arrow = "#262626"
+os = "#00afff"
+os_admin = "#ff0000"
+directory = "#00ffff"
+time = "#444444"
+git = "#ffaf00"
+git_status = "#ff00ff"
+python = "#ffaf00"
+node = "#afff00"
+conda = "#afff00"
+java = "#ff00ff"
+rust = "#ffaf00"
+clang = "#00afff"
+duration = "#ffffaf"
+text_color = "#ffffff"
+text_light = "#121212"
+
+[palettes.classic]
+arrow = "#444444"
+os = "#5555FF"
+os_admin = "#FF5555"
+directory = "#55FFFF"
+time = "#888888"
+git = "#FFFF55"
+git_status = "#FF55FF"
+python = "#FFFF55"
+node = "#55FF55"
+conda = "#55FF55"
+java = "#FF5555"
+rust = "#FF5555"
+clang = "#5555FF"
+duration = "#FF55FF"
+text_color = "#FFFFFF"
+text_light = "#000000"
+
+[os]
+disabled = false
+style = "bg:os fg:text_color"
+format = "[](fg:os)[ $symbol]($style)"
+
+[username]
+style_user = "bg:os fg:text_color"
+style_root = "bg:os_admin fg:text_color"
+format = "[$user ]($style)[](fg:os)"
+disabled = false
+show_always = true
+
+[directory]
+format = " [](fg:directory)[  $path ]($style)[$read_only]($read_only_style)[](fg:directory)"
+truncation_length = 2
+style = "fg:text_color bg:directory"
+read_only_style = "fg:text_color bg:directory"
+before_repo_root_style = "fg:text_color bg:directory"
+truncation_symbol = "…/"
+truncate_to_repo = true
+read_only = "  "
+
+[time]
+disabled = false
+format = "[](fg:time)[ $time ]($style)[](fg:time) "
+time_format = "%H:%M"
+style = "fg:text_color bg:time"
+
+[cmd_duration]
+format = " [](fg:duration)[ $duration ]($style)[](fg:duration)"
+style = "fg:text_light bg:duration"
+min_time = 500
+
+[git_branch]
+format = " [](fg:git)[$symbol$branch ](fg:text_light bg:git)[](fg:git)"
+symbol = " "
+
+[git_status]
+format = " ([](fg:git_status)[$all_status$ahead_behind ]($style)[](fg:git_status))"
+style = "fg:text_light bg:git_status"
+
+[docker_context]
+disabled = false
+format = " [](fg:os)[$symbol $context ]($style)[](fg:os)"
+style = "bg:os fg:text_color"
+symbol = " "
+only_with_files = true
+
+[nodejs]
+format = " [](fg:node)[$symbol$version ]($style)[](fg:node)"
+style = "bg:node fg:text_light"
+symbol = " "
+version_format = "${raw}"
+disabled = false
+
+[python]
+disabled = false
+format = ' [](fg:python)[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\)) ]($style)[](fg:python)'
+symbol = " "
+version_format = "${raw}"
+style = "fg:text_light bg:python"
+
+[conda]
+format = " [](fg:conda)[$symbol$environment ]($style)[](fg:conda)"
+style = "bg:conda fg:text_color"
+ignore_base = false
+disabled = false
+symbol = " "
+
+[character]
+success_symbol = "[󰍟](fg:arrow)"
+error_symbol = "[󰍟](fg:red)"
+
+[os.symbols]
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+CentOS = " "
+Debian = " "
+Fedora = " "
+Linux = " "
+Macos = " "
+Ubuntu = " "
+Windows = " "
