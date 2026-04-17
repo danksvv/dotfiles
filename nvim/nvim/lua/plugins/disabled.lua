@@ -13,4 +13,6 @@ return {
 
   -- Deshabilita la integración con el autocompletado (cmp)
   { "zbirenbaum/copilot-cmp", enabled = false },
+  -- Deshabilita el entorno de avante
+  { "yetone/avante.nvim", enabled = false },
 }

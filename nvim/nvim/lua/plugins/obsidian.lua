@@ -19,8 +19,12 @@ return {
         path = vim.fn.expand("~") .. "/Google Drive/My Drive/obsidianVault",
       },
     },
+    -- Reemplazo de las opciones antiguas y duplicadas:
+    frontmatter = {
+      disable_frontmatter = true, -- Nueva ubicación para evitar el warning
+    },
 
-    -- ELIMINADO: detect_cwd = true (Ya no existe y causaba el warning)
+    legacy_commands = false,
 
     daily_notes = {
       folder = "dailies",
@@ -35,7 +39,7 @@ return {
       tags = "",
     },
 
-    disable_frontmatter = true,
+    -- disable_frontmatter = true,
 
     -- Usamos Telescope para buscar archivos
     picker = {

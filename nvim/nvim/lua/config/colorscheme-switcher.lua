@@ -4,6 +4,7 @@ local ColorschemeSwitcher = {}
 -- 1. Lista de todos los temas (debe coincidir con los archivos .lua en plugins/colorschemes/)
 ColorschemeSwitcher.themes = {
   -- ➡️ COLOCA AQUÍ EL TEMA QUE QUIERES COMO DEFECTO ⬅️
+  "rose-pine",
   "kanagawa",
   "gruvbox",
   "dracula",
@@ -16,7 +17,6 @@ ColorschemeSwitcher.themes = {
   "onedark", -- Requiere require('onedark').load()
   "oldworld",
   "catppuccin",
-  "rose-pine",
   "tokyonight",
   "nightfox",
   "molokai",

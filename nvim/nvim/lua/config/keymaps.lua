@@ -181,3 +181,23 @@ vim.keymap.set("n", "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", { desc = "Stop
 
 -- 3. Asigna el atajo en modo normal
 vim.keymap.set("n", "<leader>h", ShowHelp, { desc = "Mostrar Guía de Comandos (Help/Render)" })
+--
+-- ==========================================================
+-- ## Inteligencia Artificial: Gemini (CodeCompanion)
+-- ==========================================================
+
+-- Prefijo <leader>g para no entrar en conflicto con Help (<leader>h)
+-- ni con temas de color (<leader>c)
+
+-- 1. Abrir/Cerrar el Chat de Gemini
+vim.keymap.set({ "n", "v" }, "<leader>ga", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Gemini: Alternar Chat" })
+
+-- 2. Acciones rápidas de código (Explicar, Refactorizar, Corregir)
+-- En modo visual, actúa sobre la selección (útil para Java/Python)
+vim.keymap.set({ "n", "v" }, "<leader>ge", "<cmd>CodeCompanion<cr>", { desc = "Gemini: Ejecutar Acción Inline" })
+
+-- 3. Añadir el buffer o selección actual al contexto del chat
+vim.keymap.set("v", "<leader>gc", "<cmd>CodeCompanionChat Add<cr>", { desc = "Gemini: Añadir al Contexto" })
+
+-- 4. Abrir panel de comandos de CodeCompanion
+vim.keymap.set("n", "<leader>gp", "<cmd>CodeCompanionActions<cr>", { desc = "Gemini: Panel de Comandos" })
