@@ -18,7 +18,7 @@ local background_path = ""
 
 -- Lógica condicional para asignar la ruta
 if os_name:find("darwin") then -- Mac OS
-	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/ninja-lobezno-gp.png"
+	background_path = "/Users/danksvv/Pictures/Wallpapers/gimp-images/samurai003-gp.png"
 elseif os_name:find("linux") then -- Linux (Ubuntu)
 	background_path = "/home/danks/Pictures/Wallpapers/samurai002-gp.png"
 end
@@ -121,8 +121,8 @@ config.colors = {
 -- ================================================================= --
 
 -- Fuente principal
-config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
--- config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
+-- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
+config.font = wezterm.font("Lilex Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded", italic = true })
 -- config.font = wezterm.font("BlexMono Nerd Font Mono", { weight = "Medium", stretch = "SemiExpanded" })
 config.font_size = 15.0
 config.line_height = 1.1
@@ -149,7 +149,10 @@ config.cursor_blink_ease_out = "EaseOut"
 --
 -- Esto activará el parpadeo visible y la animación suave
 config.default_cursor_style = "BlinkingBlock"
-
+--
+-- Activar copia automática al seleccionar con el ratón
+config.selection_word_boundary = " \t\n{}[]()\"'`"
+--
 -- Opacidad del fondo de la ventana (para que se vea el fondo de pantalla)
 config.window_background_opacity = 0.2
 
@@ -167,6 +170,16 @@ config.window_close_confirmation = "NeverPrompt"
 -- config.window_decorations = "NONE"
 config.window_decorations = "RESIZE"
 
+-- Dimensiones iniciales de la ventana
+config.initial_cols = 200
+config.initial_rows = 50
+
+-- Centrar la ventana al iniciar
+-- Nota: 'Main' se refiere a la pantalla principal de tu iMac
+config.window_decorations = "RESIZE" -- Ya lo tienes, pero asegúrate de que se mantenga
+
+-- Limitar el scrollback para que el pipeline sea instantáneo
+config.scrollback_lines = 3500
 -- ================================================================= --
 -- 5. RENDIMIENTO Y GRÁFICOS
 -- ================================================================= --
@@ -284,6 +297,47 @@ wezterm.on("toggle-opacity", function(window, pane)
 end)
 --
 -- ================================================================= --
+-- NUEVA LÓGICA: Enviar Buffer a Gemini (Optimizado)
+-- ================================================================= --
+local function notify(window, msg)
+	window:toast_notification("Gemini Pipeline", msg, nil, 3000)
+end
+
+wezterm.on("diagnose-with-gemini", function(window, pane)
+	-- 1. Capturar el texto visible
+	local text = pane:get_lines_as_text(config.scrollback_lines)
+
+	-- 2. Manejo seguro de archivos temporales
+	local temp_file = os.tmpname()
+	local f, err = io.open(temp_file, "w")
+
+	if f then
+		f:write(text)
+		f:close()
+	else
+		notify(window, "Error al crear archivo temporal: " .. (err or "unknown"))
+		return
+	end
+
+	-- 3. Ejecución del Pipeline
+	window:perform_action(
+		wezterm.action.SpawnCommandInNewWindow({
+			args = {
+				"zsh",
+				"-c",
+				string.format(
+					'gemini --system "$(cat ~/SYSTEM_CONTEXT.md)" "Analiza este buffer de mi iMac Pro (Docker/VMware): $(cat %s)"; rm %s; echo \'\nPresiona Enter para cerrar...\'; read',
+					temp_file,
+					temp_file
+				),
+			},
+		}),
+		pane
+	)
+	notify(window, "Buffer enviado a Gemini")
+end)
+--
+-- ================================================================= --
 -- 7. ATAJOS DE TECLADO (Keybindings)
 -- ================================================================= --
 
@@ -327,6 +381,24 @@ config.keys = {
 		key = "u",
 		mods = "CMD",
 		action = wezterm.action.EmitEvent("toggle-opacity"),
+	},
+	-- gemini pipeline (CMD+G)
+	{
+		key = "g",
+		mods = "CMD",
+		action = wezterm.action.EmitEvent("diagnose-with-gemini"),
+	},
+}
+
+-- ================================================================= --
+-- 8. CONFIGURACIÓN DEL RATÓN (Mouse Bindings)
+-- ================================================================= --
+config.mouse_bindings = {
+	-- Pegar al hacer clic con el botón derecho (Botón 3)
+	{
+		event = { Down = { streak = 1, button = "Right" } },
+		mods = "NONE",
+		action = wezterm.action.PasteFrom("Clipboard"),
 	},
 }
 return config
