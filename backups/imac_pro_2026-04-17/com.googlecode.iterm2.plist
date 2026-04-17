@@ -51635,7 +51635,7 @@ The script should do this: \(ai.prompt)</string>
 			<key>Description</key>
 			<string>Default</string>
 			<key>Disable Window Resizing</key>
-			<true/>
+			<false/>
 			<key>Draw Powerline Glyphs</key>
 			<true/>
 			<key>Flashing Bell</key>

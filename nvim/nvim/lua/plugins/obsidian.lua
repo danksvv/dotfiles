@@ -16,7 +16,9 @@ return {
         name = "Vault",
         -- Usamos la ruta estándar con la expansión de HOME.
         -- Al coincidir con donde tú abres la terminal, el plugin se conectará solo.
-        path = vim.fn.expand("~") .. "/Google Drive/My Drive/obsidianVault",
+        -- path = vim.fn.expand("~") .. "/Google Drive/My Drive/obsidianVault",
+-- Ruta virtual idéntica para todas tus máquinas
+      path = vim.fn.expand("~") .. "/obsidian",
       },
     },
     -- Reemplazo de las opciones antiguas y duplicadas:

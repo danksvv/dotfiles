@@ -2,16 +2,12 @@
 # 1. MOTOR ASÍNCRONO (ZINIT)
 # ==============================================================================
 ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
-if [[ ! -d $ZINIT_HOME ]]; then
-    mkdir -p "$(dirname $ZINIT_HOME)"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
+[[ ! -d $ZINIT_HOME ]] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # ==============================================================================
-# 2. PLUGINS CORE (Carga rápida sin bloquear)
+# 2. PLUGINS CORE
 # ==============================================================================
-# Cargamos librerías esenciales de OMZ sin todo el framework
 zinit light-mode for \
     OMZL::git.zsh \
     OMZL::history.zsh \
@@ -21,109 +17,79 @@ zinit light-mode for \
     zdharma-continuum/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions
 
+
 # ==============================================================================
-# 3. VARIABLES DE ENTORNO Y PATHS
+# 3. VARIABLES DE ENTORNO Y PATHS (Universal: Intel & Apple Silicon)
 # ==============================================================================
 export LANG=es_ES.UTF-8
 export EDITOR='nvim'
 export GOPATH="$HOME/.local/share/go"
-export PATH="$HOME/.scripts:/usr/local/opt/openjdk/bin:$PATH"
-export PATH="/usr/local/opt/sqlite/bin:$PATH"
-export PATH="/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
-# Gestión de secretos
+# Inicialización dinámica de Homebrew según arquitectura
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# PATH único y jerárquico
+# Prioridad: Scripts personales > Binarios Brew > Otros binarios específicos > $PATH
+export PATH="$HOME/.scripts:${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${HOMEBREW_PREFIX}/opt/openjdk/bin:${HOMEBREW_PREFIX}/opt/sqlite/bin:$PATH"
+
 [[ -f "$HOME/.zshrc_private" ]] && source "$HOME/.zshrc_private"
-
-# Apariencia de ls
-source "$HOME/.ls_themes.zsh"
+[[ -f "$HOME/.ls_themes.zsh" ]] && source "$HOME/.ls_themes.zsh"
 set_ls_theme "neon"
 
 # ==============================================================================
-# 4. INYECTA ALIAS GLOBALES ZSH
+# 4. ALIAS Y EDITOR
 # ==============================================================================
+# --- Motor de Edición Global ---
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
 
-source $(brew --prefix)/etc/grc.zsh
-
-# ==============================================================================
-# 5. ALIAS Y FUNCIONES
-# ==============================================================================
+# --- Alias de Aplicaciones ---
+alias vim="$EDITOR"
+alias v="$EDITOR"
 alias ls='lsd'
-alias l='ls -ltr'
-alias l.='ls -ltra | grep "^\."'
-alias la='ls -lad .*'
-alias lt='ls --tree'
-alias vi='nvim'
 alias x='exit'
 alias tx='tmux'
 alias zj='zellij'
-alias ip="grc ip"
-alias wcat='wezterm imgcat'
 alias gitalias="git config --global --get-regexp alias"
-alias fzfbat='fzf --preview="bat --theme=gruvbox-dark --color=always {}"'
-alias fzfnvim='nvim $(fzf --preview="bat --theme=gruvbox-dark --color=always {}")'
 
-# Función de limpieza de archivos
-cf() {
-    [[ $# -eq 0 ]] && { echo "Uso: cf <archivo1>..."; return 1; }
-    for file in "$@"; do
-        [[ -f "$file" ]] && { :> "$file"; echo "✔️ '$file' vaciado."; } || echo "⚠️ '$file' no existe."
-    done
-}
+# --- Navegación de Directorios (Basados en lsd) ---
+alias l='ls -ltr'
+alias la='ls -lad .*'
+alias l.='ls -d .*'        # lsd ya maneja archivos ocultos de forma más limpia
+alias lt='ls --tree'
 
-# Función de mantenimiento de Homebrew (Corregida)
-brewup() {
-    setopt localoptions errexit
-    clear
-    echo "==> [1/3] Sincronizando repositorios..."
-    brew update
-
-    echo "==> [2/3] Actualizando paquetes (Upgrade)..."
-    brew upgrade
-
-    echo "==> [3/3] Limpieza forzada de archivos huérfanos..."
-    # Añadimos -s para limpiar el caché de descargas dañadas
-    brew cleanup -s --prune=all
-    
-    echo "==> Verificando estado final..."
-    brew doctor || true
-    
-    echo "==> Mantenimiento completado."
-    read -q "?Presiona 'y' para ver fastfetch..." && fastfetch --config examples/12.jsonc
-}
-
+# --- Herramientas GRC ---
+[[ -f "${HOMEBREW_PREFIX}/etc/grc.zsh" ]] && source "${HOMEBREW_PREFIX}/etc/grc.zsh"
+# Comprobar si grc e ip existen antes de definir el alias
+if (( $+commands[grc] )) && (( $+commands[ip] )); then
+    alias ip="grc ip"
+fi
 # ==============================================================================
-# 6. CARGA DIFERIDA (TURBO MODE) - El secreto de la velocidad
+# 5. CARGA DIFERIDA (TURBO MODE)
 # ==============================================================================
-# Estas herramientas se inyectan 0.1s después de que el prompt esté listo.
 zinit wait'0' lucid for \
     atinit'eval "$(zoxide init --cmd cd zsh)"' \
     atinit'eval "$(atuin init zsh)"' \
     atinit'eval "$(fnm env --use-on-cd --shell zsh)"' \
     zdharma-continuum/null
 
-# SDKMAN bajo demanda (No ralentiza el inicio)
-sdk() {
-    unset -f sdk
-    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-    sdk "$@"
-}
-
 # ==============================================================================
-# 7. PROMPT Y HOOKS FINALES
+# 6. PROMPT Y HOOKS FINALES (LIMPIO)
 # ==============================================================================
-# Starship se carga al final para asegurar que tiene prioridad visual
-eval "$(starship init zsh)"
-eval "$(direnv hook zsh)"
-
-# Ejecutar fastfetch solo en sesiones interactivas
-[[ $- == *i* ]] && [[ -x $(command -v fastfetch) ]] && fastfetch --config examples/12.jsonc
-
-# Init starship solo si el binario existe para evitar errores en el shell
 if command -v starship &> /dev/null; then
+    export STARSHIP_CONFIG="$HOME/.config/starship.toml"
     eval "$(starship init zsh)"
 fi
 
-eval "$(direnv hook zsh)"
+if command -v direnv &> /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
 
-# Compilar este fichero a bytecode para la próxima vez
+[[ $- == *i* ]] && command -v fastfetch &> /dev/null && fastfetch --config examples/12.jsonc
+
 zcompile "$HOME/.zshrc"
+zcompile "$HOME/.zshrc-macos"
