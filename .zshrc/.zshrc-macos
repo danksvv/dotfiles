@@ -118,5 +118,12 @@ eval "$(direnv hook zsh)"
 # Ejecutar fastfetch solo en sesiones interactivas
 [[ $- == *i* ]] && [[ -x $(command -v fastfetch) ]] && fastfetch --config examples/12.jsonc
 
+# Init starship solo si el binario existe para evitar errores en el shell
+if command -v starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+eval "$(direnv hook zsh)"
+
 # Compilar este fichero a bytecode para la próxima vez
 zcompile "$HOME/.zshrc"
