@@ -1,255 +1,122 @@
 # ==============================================================================
-# SECCIÓN 1: CONFIGURACIÓN DE OH MY ZSH (OMZ)
+# 1. MOTOR ASÍNCRONO (ZINIT)
 # ==============================================================================
-# Esta sección debe ir PRIMERO. Define las variables que OMZ leerá
-# al cargarse.
-# ==============================================================================
-
-# Path to your Oh My Zsh installation. [cite: 1]
-export ZSH="$HOME/.oh-my-zsh"
-
-# Nombre del tema de OMZ. [cite: 1]
-ZSH_THEME="robbyrussell"
-
-# Lista de plugins de OMZ. [cite: 17]
-# Cargar demasiados plugins puede ralentizar el inicio de la shell. [cite: 17]
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)
-
-# --- Opciones comentadas de OMZ ---
-# (Las mantengo agrupadas aquí por si las necesitas en el futuro)
-#
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" ) [cite: 2]
-# CASE_SENSITIVE="true" [cite: 3]
-# HYPHEN_INSENSITIVE="true" [cite: 4]
-# zstyle ':omz:update' mode disabled
-# zstyle ':omz:update' frequency 13 [cite: 5]
-# DISABLE_MAGIC_FUNCTIONS="true" [cite: 6]
-# DISABLE_LS_COLORS="true" [cite: 7]
-# DISABLE_AUTO_TITLE="true" [cite: 8]
-# ENABLE_CORRECTION="true" [cite: 9]
-# COMPLETION_WAITING_DOTS="true" [cite: 11]
-# DISABLE_UNTRACKED_FILES_DIRTY="true" [cite: 13]
-# HIST_STAMPS="mm/dd/yyyy" [cite: 15]
-# ZSH_CUSTOM=/path/to/new-custom-folder [cite: 16]
+ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
+if [[ ! -d $ZINIT_HOME ]]; then
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+source "${ZINIT_HOME}/zinit.zsh"
 
 # ==============================================================================
-# SECCIÓN 2: CARGA DE OH MY ZSH (OMZ)
+# 2. PLUGINS CORE (Carga rápida sin bloquear)
 # ==============================================================================
-# Una vez configurado, cargamos el framework.
-# Toda configuración personal (exports, alias) debe ir DESPUÉS de esta línea.
-# ==============================================================================
+# Cargamos librerías esenciales de OMZ sin todo el framework
+zinit light-mode for \
+    OMZL::git.zsh \
+    OMZL::history.zsh \
+    OMZL::key-bindings.zsh \
+    OMZL::completion.zsh \
+    OMZP::git \
+    zdharma-continuum/fast-syntax-highlighting \
+    zsh-users/zsh-autosuggestions
 
-source $ZSH/oh-my-zsh.sh
-
 # ==============================================================================
-# SECCIÓN 3: EXPORTS Y CONFIGURACIÓN DEL ENTORNO
+# 3. VARIABLES DE ENTORNO Y PATHS
 # ==============================================================================
-# Configuración de variables de entorno y el PATH.
-# El orden importa: los directorios añadidos al principio del PATH
-# tienen prioridad.
-# ==============================================================================
-# Variables de entorno preferidas
 export LANG=es_ES.UTF-8
 export EDITOR='nvim'
-
-# Añade tu directorio personal de scripts al PATH (alta prioridad)
-export PATH="$HOME/.scripts:$PATH"
-
-# Añade OpenJDK (Java) al PATH
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
-
-# ruta de go (escribe, compilar and download code go)
 export GOPATH="$HOME/.local/share/go"
+export PATH="$HOME/.scripts:/usr/local/opt/openjdk/bin:$PATH"
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+export PATH="/usr/local/opt/sqlite/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
-# Carga la función de temas de LS_COLORS
+# Gestión de secretos
+[[ -f "$HOME/.zshrc_private" ]] && source "$HOME/.zshrc_private"
+
+# Apariencia de ls
 source "$HOME/.ls_themes.zsh"
-
-# Establece el tema que quieres usar por defecto al iniciar
 set_ls_theme "neon"
 
 # ==============================================================================
-# SECCIÓN 4: 🚨 GESTIÓN DE SECRETOS 🚨
-# ==============================================================================
-#  Carga ese fichero de forma segura (la línea de abajo lo hace):
-
-if [ -f "$HOME/.zshrc_private" ]; then
-   source "$HOME/.zshrc_private"
-fi
+# 4. INYECTA ALIAS GLOBALES ZSH
 # ==============================================================================
 
-# ==============================================================================
-# SECCIÓN 5: ALIAS Y FUNCIONES PERSONALIZADAS
-# ==============================================================================
-# Todos tus alias y funciones van aquí para encontrarlos fácilmente.
-# ==============================================================================
+source $(brew --prefix)/etc/grc.zsh
 
-# --- Aliases ---
+# ==============================================================================
+# 5. ALIAS Y FUNCIONES
+# ==============================================================================
 alias ls='lsd'
-alias la='/bin/ls -a | grep "^\."'
+alias l='ls -ltr'
+alias l.='ls -ltra | grep "^\."'
+alias la='ls -lad .*'
 alias lt='ls --tree'
-
-# kittens
-alias icat='kitten icat'
-
-# icons for ls 
 alias vi='nvim'
 alias x='exit'
-alias live='live-server'
 alias tx='tmux'
-alias py='python3'
 alias zj='zellij'
-
-# wezterm (terminal de escritorio)
+alias ip="grc ip"
 alias wcat='wezterm imgcat'
-
-# alias git 
 alias gitalias="git config --global --get-regexp alias"
-
-# keys direct fzf mix bat & nvim
 alias fzfbat='fzf --preview="bat --theme=gruvbox-dark --color=always {}"'
 alias fzfnvim='nvim $(fzf --preview="bat --theme=gruvbox-dark --color=always {}")'
-# Alias para comandos de Uso de Disco potentes
 
-# Alias para ncdu (Analizador Interactivo)
-alias dug='ncdu'
-
-# Alias para dust con configuración por defecto (profundidad 3, mostrar todos los archivos)
-alias dus='dust -d 3 -s'
-
-# Alias para cambiar de tema fastfetch
-alias fastfetch='fastfetch --config examples/25.jsonc'
-
-# ==============================================================================
-# --- FUNCIONES DEFINIDAS  ---
-# ==============================================================================
-# Función 'cf' (Clear File) para vaciar contenido de uno o más archivos. [cite: 19]
+# Función de limpieza de archivos
 cf() {
-    if [ $# -eq 0 ]; then
-        echo "Uso: cf <archivo1> [archivo2...]"
-        echo "   (Vacía el contenido de archivos, manteniendo el archivo.)" 
-        return 1
-    fi
+    [[ $# -eq 0 ]] && { echo "Uso: cf <archivo1>..."; return 1; }
     for file in "$@"; do
-        if [ -d "$file" ]; then
-            echo "cf: 🚨 Error: '$file' es un directorio. Solo funciona con archivos."
-        elif [ -f "$file" ]; then
-            # El comando limpio para truncar contenido: :> $file
-            :> "$file" 
-            echo "cf: '$file' vaciado." 
-        else
-            echo "cf: ⚠️ Advertencia: '$file' no existe o no es un archivo."
-        fi
+        [[ -f "$file" ]] && { :> "$file"; echo "✔️ '$file' vaciado."; } || echo "⚠️ '$file' no existe."
     done
 }
 
-# Función para el mantenimiento completo de Homebrew
-function brewup() {
-    # 'set -e' dentro de una función de zsh es 'setopt localoptions errexit'
+# Función de mantenimiento de Homebrew (Corregida)
+brewup() {
     setopt localoptions errexit
-
     clear
-    echo "Iniciando mantenimiento de Homebrew..."
-    
-    # Comandos críticos: si estos fallan, queremos que el script pare.
-    echo "Actualizando Homebrew y paquetes instalados..."
-    brew update && brew upgrade
-    
-    echo "Limpiando paquetes antiguos..."
-    brew cleanup
-    
-    # --- INICIO DE LA CORRECCIÓN ---
+    echo "==> [1/3] Sincronizando repositorios..."
+    brew update
 
-    # Comando no-crítico (Doctor):
-    # 'brew doctor' falla (retorna no-cero) si encuentra avisos.
-    # Usamos '|| true' para que no active 'errexit' y detenga el script.
-    echo "Comprobando el estado de Homebrew..."
-    brew doctor || true 
-    
-    echo
-    echo "¡Mantenimiento de Homebrew completado!"
-    echo
-    
-    # Comando no-crítico (Read):
-    # 'read' falla si recibe un EOF (Ctrl+D).
-    # Usamos '|| true' para evitar que 'errexit' se active si
-    # el usuario pulsa Ctrl+D en lugar de Enter.
-    # for bash, use:
-    # read -p "Presiona Enter para limpiar y mostrar fastfetch..." || true
-    # for zsh, use:
-    read "?Presiona Enter para limpiar y mostrar fastfetch..." || true
-    # --- FIN DE LA CORRECCIÓN ---
+    echo "==> [2/3] Actualizando paquetes (Upgrade)..."
+    brew upgrade
 
-    clear
-    fastfetch
-    # fastfetch --config examples/25.jsonc
+    echo "==> [3/3] Limpieza forzada de archivos huérfanos..."
+    # Añadimos -s para limpiar el caché de descargas dañadas
+    brew cleanup -s --prune=all
+    
+    echo "==> Verificando estado final..."
+    brew doctor || true
+    
+    echo "==> Mantenimiento completado."
+    read -q "?Presiona 'y' para ver fastfetch..." && fastfetch --config examples/12.jsonc
 }
-# ==============================================================================
-# SECCIÓN 6: INICIALIZACIÓN DE HERRAMIENTAS (EVALS)
-# ==============================================================================
-# Agrupamos todos los 'eval' que configuran herramientas.
-# ==============================================================================
-
-# zoxide (navegación de directorios)
-eval "$(zoxide init --cmd cd zsh)"
-
-# atuin (historial de shell mejorado)
-eval "$(atuin init zsh)"
-
-# fnm (gestor de versiones de Node)
-# Nota: He consolidado tu configuración de 'fnm'.
-# Las otras líneas que tenías eran redundantes con esta.
-eval "$(fnm env --use-on-cd --shell zsh)" 
-
-# SDKMAN (gestor de SDKs de Java, etc.)
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # ==============================================================================
-# SECCIÓN 7: PROMPT Y MENSAJE DE BIENVENIDA
+# 6. CARGA DIFERIDA (TURBO MODE) - El secreto de la velocidad
 # ==============================================================================
-# Lo cosmético va casi al final.
+# Estas herramientas se inyectan 0.1s después de que el prompt esté listo.
+zinit wait'0' lucid for \
+    atinit'eval "$(zoxide init --cmd cd zsh)"' \
+    atinit'eval "$(atuin init zsh)"' \
+    atinit'eval "$(fnm env --use-on-cd --shell zsh)"' \
+    zdharma-continuum/null
+
+# SDKMAN bajo demanda (No ralentiza el inicio)
+sdk() {
+    unset -f sdk
+    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+    sdk "$@"
+}
+
 # ==============================================================================
-
-# Mensaje de bienvenida (ASCII art)
-echo "
-                                                                   
- ██████╗ ██████╗ ██████╗ ███████╗         
-██╔════╝██╔═══██╗██╔══██╗██╔════╝         
-██║     ██║   ██║██║  ██║█████╗           
-██║     ██║   ██║██║  ██║██╔══╝           
-╚██████╗╚██████╔╝██████╔╝███████╗         
- ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝         
-                                                                   
- ██████████     █████████   ██████   █████ █████   ████  █████████ 
-▒▒███▒▒▒▒███   ███▒▒▒▒▒███ ▒▒██████ ▒▒███ ▒▒███   ███▒  ███▒▒▒▒▒███
- ▒███   ▒▒███ ▒███    ▒███  ▒███▒███ ▒███  ▒███  ███   ▒███    ▒▒▒ 
- ▒███    ▒███ ▒███████████  ▒███▒▒███▒███  ▒███████    ▒▒█████████ 
- ▒███    ▒███ ▒███▒▒▒▒▒███  ▒███ ▒▒██████  ▒███▒▒███    ▒▒▒▒▒▒▒▒███
- ▒███    ███  ▒███    ▒███  ▒███  ▒▒█████  ▒███ ▒▒███   ███    ▒███
- ██████████   █████   █████ █████  ▒▒█████ █████ ▒▒████▒▒█████████ 
-▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒   ▒▒▒▒▒ ▒▒▒▒▒    ▒▒▒▒▒ ▒▒▒▒▒   ▒▒▒▒  ▒▒▒▒▒▒▒▒▒  
-                                                                   
-"
-
-# Starship (prompt personalizado)
-# Debe ir DESPUÉS de las herramientas (como fnm, sdkman) para que
-# pueda mostrar el estado correcto de ellas en el prompt.
+# 7. PROMPT Y HOOKS FINALES
+# ==============================================================================
+# Starship se carga al final para asegurar que tiene prioridad visual
 eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
 
-# ==============================================================================
-# SECCIÓN 8: CARGA FINAL (DEBE IR AL FINAL)
-# ==============================================================================
-# 'direnv' debe ser lo ÚLTIMO en cargarse.
-# Necesita "engancharse" al prompt final para poder cargar y descargar
-# variables de entorno cuando te mueves entre directorios.
-# ==============================================================================
+# Ejecutar fastfetch solo en sesiones interactivas
+[[ $- == *i* ]] && [[ -x $(command -v fastfetch) ]] && fastfetch --config examples/12.jsonc
 
-# direnv (gestor de variables por directorio)
-eval "$(direnv hook zsh)" 
-
-# Fin del fichero .zshrc
-# (He eliminado el '}' suelto que tenías al final, 
-#  probablemente estaba causando un error de sintaxis).
-
-
-
+# Compilar este fichero a bytecode para la próxima vez
+zcompile "$HOME/.zshrc"

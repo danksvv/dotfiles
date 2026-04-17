@@ -23,7 +23,9 @@ set_ls_theme() {
     theme_solarized="di=38;5;33:ln=38;5;61:so=38;5;136:pi=38;5;136:ex=38;5;64:bd=48;5;236;38;5;136:cd=48;5;236;38;5;108:su=48;5;236;38;5;160:sg=48;5;236;38;5;136:tw=48;5;236;38;5;66:ow=48;5;236;38;5;106"
     theme_dracula="di=38;5;141:ln=38;5;141:ex=38;5;80:*.tar=38;5;221:*.zip=38;5;221:*.gz=38;5;221:*.jpg=38;5;139:*.png=38;5;139:*.mkv=38;5;139:*.mp3=38;5;139:*.md=38;5;248:*.txt=38;5;248:*.sh=38;5;80:*.py=38;5;80"
     theme_catppuccin="di=38;5;153:ln=38;5;183:ex=38;5;152:ow=48;5;19;38;5;231:*.tar=38;5;215:*.zip=38;5;215:*.gz=38;5;215:*.jpg=38;5;203:*.png=38;5;203:*.mkv=38;5;203:*.mp3=38;5;203:*.md=38;5;178:*.txt=38;5;178"
-
+    #
+# 2. Sanitización de entrada (AQUÍ VA LA LÍNEA)
+    local selected_theme="${1:-neon}"
     # El 'case' que aplica el tema
     case "$1" in
         "neon")
@@ -56,6 +58,8 @@ set_ls_theme() {
             export LS_COLORS="$theme_neon"
             ;;
     esac
+# Mutación in-place del TOML (Sintaxis estricta BSD para macOS)
+    sed -i '' -e 's/^palette = .*/palette = "'"$selected_theme"'"/' ~/.config/starship.toml
 }
 
 # -----------------------------------------------------------------
